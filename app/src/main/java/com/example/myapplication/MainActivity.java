@@ -28,10 +28,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String toadd = todo.getText().toString();
+                if (!toadd.equals("")){
                 al.add(toadd);
                 todo.setText("");
                 ad.notifyDataSetChanged();
-            }
+            }}
         });
     }
 }
