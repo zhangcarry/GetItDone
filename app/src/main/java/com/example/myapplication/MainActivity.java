@@ -18,12 +18,14 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     int pos = 0;
+    ArrayAdapter ad;
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         getMenuInflater().inflate(R.menu.menu_list, menu);
+        pos = ((AdapterView.AdapterContextMenuInfo)menuInfo).position;
 
     }
 
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.delete:
+                ad.remove(ad.getItem(pos));
+
         }
 
         return super.onContextItemSelected(item);
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final ArrayList al = new ArrayList<String>();
-        final ArrayAdapter ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
+        ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
         Button add = findViewById(R.id.button);
         final EditText todo = findViewById(R.id.editText);
         final ListView list = findViewById(R.id.list);
