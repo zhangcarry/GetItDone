@@ -14,4 +14,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="edit_task_name">Task name :</string>
+    <string name="edit_date_time">Date/Time :</string>
+    <string name="edit_date">Date</string>
+    <string name="edit_time">Time</string>
 </resources>
