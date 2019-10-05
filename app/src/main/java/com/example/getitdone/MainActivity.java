@@ -1,5 +1,6 @@
 package com.example.getitdone;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,10 +33,18 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method is called when the floating point button with id 'fab' is clicked.
+             * The method will start a new activity that shows the menu (i.e. CreateTodoMenuActivity) so
+             * that the user can create a to-do.
+             * @param view
+             * @author Chan Tun Aung (u6777573)
+             * @date 6-October-2019
+             */
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, CreateTodoMenuActivity.class);
+                startActivity(intent);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -103,4 +112,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
