@@ -15,10 +15,10 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="71dp"
         android:layout_marginEnd="307dp"
         android:layout_marginRight="307dp"
-        android:layout_marginBottom="693dp"
+        android:layout_marginBottom="639dp"
         android:text="@string/edit_task_name" />
 
     <EditText
@@ -43,14 +43,16 @@
         android:layout_height="29dp"
         android:layout_alignStart="@+id/textView2"
         android:layout_alignLeft="@+id/textView2"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginEnd="308dp"
-        android:layout_marginRight="308dp"
-        android:layout_marginBottom="633dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="309dp"
+        android:layout_marginRight="309dp"
+        android:layout_marginBottom="582dp"
         android:text="@string/edit_date_time" />
 
     <EditText
@@ -62,18 +64,18 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="107dp"
-        android:layout_marginLeft="107dp"
-        android:layout_marginTop="61dp"
-        android:layout_marginEnd="157dp"
-        android:layout_marginRight="157dp"
+        android:layout_marginStart="105dp"
+        android:layout_marginLeft="105dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="159dp"
+        android:layout_marginRight="159dp"
         android:ems="10"
         android:hint="@string/edit_date"
         android:inputType="date" />
 
     <EditText
         android:id="@+id/editText7"
-        android:layout_width="126dp"
+        android:layout_width="148dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
@@ -81,14 +83,40 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="267dp"
-        android:layout_marginLeft="267dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginBottom="625dp"
+        android:layout_marginStart="256dp"
+        android:layout_marginLeft="256dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginBottom="573dp"
         android:ems="10"
         android:hint="@string/edit_time"
         android:inputType="time" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/toolbar2"
+        android:layout_alignRight="@+id/toolbar2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="313dp"
+        android:layout_marginRight="313dp"
+        android:layout_marginBottom="680dp"
+        android:text="@string/save_todo" />
 
 </RelativeLayout>
