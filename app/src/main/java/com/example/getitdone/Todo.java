@@ -3,6 +3,11 @@ package com.example.getitdone;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Class that represents a single to-do.
+ * @author Chan Tun Aung (u6777573)
+ * @author future author, put your name here
+ */
 public class Todo implements Serializable {
 
     private static final long serialVersionUID = 6102019300L;
