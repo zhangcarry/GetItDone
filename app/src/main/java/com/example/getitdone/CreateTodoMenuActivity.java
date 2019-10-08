@@ -8,15 +8,18 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -32,6 +35,14 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         final Calendar myCalendar = Calendar.getInstance();
         final EditText edittext = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);
+        View inflatedView = getLayoutInflater().inflate(R.layout.activity_main, null);
+        final ListView todo = inflatedView.findViewById(R.id.todo);
+        final ArrayList al = new ArrayList<String>();
+        final ArrayAdapter ad;
+        ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
+        todo.setAdapter(ad);
+
+
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -88,6 +99,9 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     snackbar.show();
                 } else {
                     // Add item to list
+                    al.add(name);
+                    ad.notifyDataSetChanged();
+                    finish();
                 }
             }
         });
