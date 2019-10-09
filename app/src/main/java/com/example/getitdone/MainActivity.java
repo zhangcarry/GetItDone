@@ -1,13 +1,14 @@
 package com.example.getitdone;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.view.ContextMenu;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -22,23 +23,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,7 +38,41 @@ public class MainActivity extends AppCompatActivity
     List<Todo> todos = null;
     ListView tdListView;
     private ArrayAdapter tdListAdapter;
-    ArrayList<String> al = new ArrayList();
+    int pos = 0;
+
+    // context menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        getMenuInflater().inflate(R.menu.menu_list, menu);
+        pos = ((AdapterView.AdapterContextMenuInfo)menuInfo).position;
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.delete) {
+            List list = Serialize.loadTodos("todos.dat", this);
+            list.remove(tdListView.getItemAtPosition(pos));
+            Serialize.saveTodos("todos.dat", list, this);
+            tdListAdapter.clear();
+            tdListAdapter.addAll(list);
+            tdListAdapter.notifyDataSetChanged();
+        }
+        if (item.getItemId() == R.id.edit) {
+            List list2 = Serialize.loadTodos("todos.dat", this);
+            int index = list2.indexOf(tdListAdapter.getItem(pos).toString());
+            list2.set(index, "trash");
+            todos.clear();
+            todos.addAll(list2);
+            tdListAdapter.notifyDataSetChanged();
+            Serialize.saveTodos("todos.dat", list2, this);
+        }
+
+        return super.onContextItemSelected(item);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +96,7 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(intent, CREATE_TODO_REQUEST);
             }
         });
+
         // list to-dos
         final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
         todos = Serialize.loadTodos(TODO_DATA_FILE, this);
@@ -91,51 +117,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        //setup calendar selector
-        final Calendar myCalendar = Calendar.getInstance();
-        final EditText datetext = findViewById(R.id.dateSelect);
-        final String dateStr = "dd/MM/yy";
-        final String timeStr = "h:mm a";
-        final SimpleDateFormat dateFormat = new SimpleDateFormat(dateStr, Locale.UK);
-        final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
-        final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
-
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                datetext.setText(dateFormat.format(myCalendar.getTime()));
-            }
-
-        };
-
-        datetext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(MainActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-
-
-        //setup listview
-        ListView list = (ListView) findViewById(R.id.todo);
-        ArrayAdapter<String> adaptor = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
-        list.setAdapter(adaptor);
-        //load data
-        List tempList = new ArrayList();
-        tempList.add("test");
-        if (Serialize.loadTodos(getResources().getString(R.string.todos_data_file), getApplicationContext()) != null) {
-            tempList = Serialize.loadTodos(getResources().getString(R.string.todos_data_file), getApplicationContext());
-        }
-        al.addAll(tempList);
-        adaptor.notifyDataSetChanged();
+        registerForContextMenu(tdListView);
     }
 
     @Override
@@ -206,5 +188,6 @@ public class MainActivity extends AppCompatActivity
             tdListAdapter.notifyDataSetChanged();  // reference - https://stackoverflow.com/questions/2250770/how-to-refresh-android-listview
         }
     }
+
 
 }
