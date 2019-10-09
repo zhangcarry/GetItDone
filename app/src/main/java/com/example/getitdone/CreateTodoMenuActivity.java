@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
@@ -114,11 +115,11 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     if (Serialize.loadTodos(getResources().getString(R.string.todos_data_file), getApplicationContext()) != null){
                         todos = Serialize.loadTodos(getResources().getString(R.string.todos_data_file), getApplicationContext());
                     }
-                    else Serialize.saveTodos(getResources().getString(R.string.todos_data_file), todos, getApplicationContext());
                     todos.add(td);
                     Serialize.saveTodos(getResources().getString(R.string.todos_data_file), todos, getApplicationContext());
                     // finish();
-                    finish();
+                    Intent intent = new Intent(CreateTodoMenuActivity.this, MainActivity.class);
+                    startActivity(intent);
                 }
             }
         });

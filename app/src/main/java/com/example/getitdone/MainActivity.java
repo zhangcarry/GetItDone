@@ -1,5 +1,6 @@
 package com.example.getitdone;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -21,16 +22,22 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static final int CREATE_TODO_REQUEST = 1;
-    ArrayList al = new ArrayList();
+    ArrayList<String> al = new ArrayList();
 
 
     @Override
@@ -63,16 +70,50 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        //setup calendar selector
+        final Calendar myCalendar = Calendar.getInstance();
+        final EditText datetext = findViewById(R.id.dateSelect);
+        final String dateStr = "dd/MM/yy";
+        final String timeStr = "h:mm a";
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(dateStr, Locale.UK);
+        final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
+        final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
+
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                datetext.setText(dateFormat.format(myCalendar.getTime()));
+            }
+
+        };
+
+        datetext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(MainActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
         //setup listview
-        ListView list = findViewById(R.id.todo);
-        ArrayAdapter adaptor = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
+        ListView list = (ListView) findViewById(R.id.todo);
+        ArrayAdapter<String> adaptor = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
         list.setAdapter(adaptor);
         //load data
         List tempList = new ArrayList();
+        tempList.add("test");
         if (Serialize.loadTodos(getResources().getString(R.string.todos_data_file), getApplicationContext()) != null) {
             tempList = Serialize.loadTodos(getResources().getString(R.string.todos_data_file), getApplicationContext());
         }
-        al = (ArrayList) tempList;
+        al.addAll(tempList);
         adaptor.notifyDataSetChanged();
     }
 
