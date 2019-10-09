@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
@@ -19,7 +18,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -38,12 +36,6 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         final EditText edittext = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);
         final Spinner priority = findViewById(R.id.spinner);
-        View inflatedView = getLayoutInflater().inflate(R.layout.activity_main, null);
-        final ListView todo = inflatedView.findViewById(R.id.todo);
-        final ArrayList al = new ArrayList<String>();
-        final ArrayAdapter ad;
-        ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
-        todo.setAdapter(ad);
 
         // data and time formats
         final String dateStr = "dd/MM/yy";
@@ -102,10 +94,6 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     Snackbar snackbar = Snackbar.make(view,"Name required",Snackbar.LENGTH_SHORT);
                     snackbar.show();
                 } else {
-                    // Add item to list
-                    al.add(name);
-                    ad.notifyDataSetChanged();
-                    // finish();
 
                     // Save to the data file
                     Todo td = new Todo();
