@@ -20,11 +20,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static final int CREATE_TODO_REQUEST = 1;
+    List<Todo> todos = null;
+    ListView tdListView;
+    private ArrayAdapter tdListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +58,18 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(intent, CREATE_TODO_REQUEST);
             }
         });
+        // list to-dos
+        final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
+        todos = Serialize.loadTodos(TODO_DATA_FILE, this);
+        if (todos == null) {
+            Serialize.saveTodos(TODO_DATA_FILE, new ArrayList<Todo>(), this);
+            todos = Serialize.loadTodos(TODO_DATA_FILE, this);
+        }
+        tdListView = findViewById(R.id.todo);
+        tdListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        tdListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, todos);
+        tdListView.setAdapter(tdListAdapter);
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -118,10 +140,11 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CREATE_TODO_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                startActivity(getIntent());  // reference - https://stackoverflow.com/questions/3053761/reload-activity-in-android
-                finish();                    // reference - https://stackoverflow.com/questions/6850683/using-onresume-to-refresh-activity
-            }
+            tdListAdapter.clear();
+            final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
+            todos = Serialize.loadTodos(TODO_DATA_FILE, this);
+            tdListAdapter.addAll(todos);
+            tdListAdapter.notifyDataSetChanged();  // reference - https://stackoverflow.com/questions/2250770/how-to-refresh-android-listview
         }
     }
 
