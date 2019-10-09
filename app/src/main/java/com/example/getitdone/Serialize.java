@@ -37,6 +37,7 @@ public class Serialize {
             todos = (List<Todo>) ois.readObject();
 
             ois.close();
+            fin.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

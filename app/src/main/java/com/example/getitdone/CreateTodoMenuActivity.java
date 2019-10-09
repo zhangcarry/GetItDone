@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
@@ -12,15 +11,18 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -35,10 +37,20 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         final Calendar myCalendar = Calendar.getInstance();
         final EditText edittext = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);
+        final Spinner priority = findViewById(R.id.spinner);
+        View inflatedView = getLayoutInflater().inflate(R.layout.activity_main, null);
+        final ListView todo = inflatedView.findViewById(R.id.todo);
         final ArrayList al = new ArrayList<String>();
+        final ArrayAdapter ad;
+        ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
+        todo.setAdapter(ad);
 
-
-
+        // data and time formats
+        final String dateStr = "dd/MM/yy";
+        final String timeStr = "h:mm a";
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(dateStr, Locale.UK);
+        final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
+        final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -49,9 +61,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                String myFormat = "dd/MM/yy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
-                edittext.setText(sdf.format(myCalendar.getTime()));
+                edittext.setText(dateFormat.format(myCalendar.getTime()));
             }
 
         };
@@ -70,9 +80,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 myCalendar.set(Calendar.MINUTE, minute);
-                String myFormat = "h:mm a";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
-                edittime.setText(sdf.format(myCalendar.getTime()));
+                edittime.setText(timeFormat.format(myCalendar.getTime()));
             }
         };
 
@@ -95,11 +103,48 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     snackbar.show();
                 } else {
                     // Add item to list
-                    Intent intent2 = new Intent(CreateTodoMenuActivity.this, MainActivity.class);
-                    intent2.putExtra("todo", name);
-                    startActivity(intent2);
+                    al.add(name);
+                    ad.notifyDataSetChanged();
+                    // finish();
+
+                    // Save to the data file
+                    Todo td = new Todo();
+                    td.setName(editName.getText().toString());
+                    td.setPriority(getPriorityLevel(priority.getSelectedItem().toString()));
+                    String dd = edittext.getText().toString();
+                    String tt = edittime.getText().toString();
+                    Date dt = null;
+                    try {
+                        dt = dateAndTimeFormat.parse(dd+tt);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    td.setDueDate(dt);
+                    List<Todo> todos = Serialize.loadTodos(getResources().getString(R.string.todos_data_file), getApplicationContext());
+                    todos.add(td);
+                    Serialize.saveTodos(getResources().getString(R.string.todos_data_file), todos, getApplicationContext());
+                    finish();
                 }
             }
         });
+
+        // Dropdown menu for selecting priority
+        Spinner spinner = findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.task_priorities, android.R.layout.simple_spinner_item);
+        spinner.setAdapter(adapter);
+    }
+
+    /**
+     * Retrieve the priority level from the chosen priority by the user.
+     * @author Chan Tun Aung (u6777573)
+     */
+    private int getPriorityLevel(String choice) {
+        // user did not select any priority
+        if (choice.equals(getResources().getStringArray(R.array.task_priorities)[0])) {
+            return 0;
+        } else {
+            return Integer.parseInt( choice.split(" ")[1]);
+        }
     }
 }
