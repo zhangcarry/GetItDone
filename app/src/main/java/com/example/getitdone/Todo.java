@@ -82,7 +82,12 @@ public class Todo implements Serializable {
         StringBuilder hashStr = new StringBuilder();
         hashStr.append(this.todoName);
         hashStr.append(this.dueDate.toString());
-        hashStr.append(Integer.toString(this.priority));
+        hashStr.append(this.priority);
         return hashStr.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.todoName;
     }
 }

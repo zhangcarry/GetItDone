@@ -19,4 +19,5 @@
     <string name="edit_time">Time</string>
     <string name="save_todo">Save</string>
     <string name="task_priority">Priority :</string>
+    <string name="todos_data_file">todos.dat</string>
 </resources>

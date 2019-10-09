@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
@@ -25,6 +24,8 @@ import android.view.Menu;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    static final int CREATE_TODO_REQUEST = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CreateTodoMenuActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, CREATE_TODO_REQUEST);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -111,6 +112,17 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CREATE_TODO_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                startActivity(getIntent());  // reference - https://stackoverflow.com/questions/3053761/reload-activity-in-android
+                finish();                    // reference - https://stackoverflow.com/questions/6850683/using-onresume-to-refresh-activity
+            }
+        }
     }
 
 }
