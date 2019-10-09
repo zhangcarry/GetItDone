@@ -35,12 +35,8 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         final Calendar myCalendar = Calendar.getInstance();
         final EditText edittext = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);
-        View inflatedView = getLayoutInflater().inflate(R.layout.activity_main, null);
-        final ListView todo = inflatedView.findViewById(R.id.todo);
         final ArrayList al = new ArrayList<String>();
-        final ArrayAdapter ad;
-        ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
-        todo.setAdapter(ad);
+
 
 
 
@@ -99,9 +95,9 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     snackbar.show();
                 } else {
                     // Add item to list
-                    al.add(name);
-                    ad.notifyDataSetChanged();
-                    finish();
+                    Intent intent2 = new Intent(CreateTodoMenuActivity.this, MainActivity.class);
+                    intent2.putExtra("todo", name);
+                    startActivity(intent2);
                 }
             }
         });

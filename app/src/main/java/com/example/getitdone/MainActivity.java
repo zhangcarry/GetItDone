@@ -21,12 +21,42 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        View inflatedView = getLayoutInflater().inflate(R.layout.activity_main, null);
+
+        ArrayList al = new ArrayList<String>();
+        /*Intent received = getIntent();
+        List message = received.getStringArrayListExtra("todo");
+        if (message != null){
+            al = (ArrayList) message;
+        }
+        final ArrayAdapter ad;
+        ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
+        todo.setAdapter(ad);
+        ad.notifyDataSetChanged();*/
+        TextView textView = (TextView) findViewById(R.id.editText);
+        Intent intent = getIntent();
+        String message = intent.getStringExtra("todo");
+        if (message != null) {
+            textView.setText(message);
+        }
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
