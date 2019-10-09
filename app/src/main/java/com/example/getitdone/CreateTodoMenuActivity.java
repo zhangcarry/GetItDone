@@ -97,11 +97,20 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // If nothing entered, display prompt
                 String name = editName.getText().toString();
+                String date = edittext.getText().toString();
+                String time = edittime.getText().toString();
                 if (name.equals("")) {
                     editName.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
                     Snackbar snackbar = Snackbar.make(view,"Name required",Snackbar.LENGTH_SHORT);
                     snackbar.show();
-                } else {
+                }
+                else if (date.equals("") || (time.equals(""))){
+                            edittext.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+                            Snackbar snackbar = Snackbar.make(view,"Date required",Snackbar.LENGTH_SHORT);
+                            snackbar.show();
+
+                }
+                else {
                     // Add item to list
                     al.add(name);
                     ad.notifyDataSetChanged();

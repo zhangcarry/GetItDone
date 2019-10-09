@@ -5,8 +5,10 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.view.ContextMenu;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -21,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -35,6 +38,41 @@ public class MainActivity extends AppCompatActivity
     List<Todo> todos = null;
     ListView tdListView;
     private ArrayAdapter tdListAdapter;
+    int pos = 0;
+
+    // context menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        getMenuInflater().inflate(R.menu.menu_list, menu);
+        pos = ((AdapterView.AdapterContextMenuInfo)menuInfo).position;
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.delete) {
+            List list = Serialize.loadTodos("todos.dat", this);
+            list.remove(tdListView.getItemAtPosition(pos));
+            Serialize.saveTodos("todos.dat", list, this);
+            tdListAdapter.clear();
+            tdListAdapter.addAll(list);
+            tdListAdapter.notifyDataSetChanged();
+        }
+        if (item.getItemId() == R.id.edit) {
+            List list2 = Serialize.loadTodos("todos.dat", this);
+            int index = list2.indexOf(tdListAdapter.getItem(pos).toString());
+            list2.set(index, "trash");
+            todos.clear();
+            todos.addAll(list2);
+            tdListAdapter.notifyDataSetChanged();
+            Serialize.saveTodos("todos.dat", list2, this);
+        }
+
+        return super.onContextItemSelected(item);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +96,7 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(intent, CREATE_TODO_REQUEST);
             }
         });
+
         // list to-dos
         final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
         todos = Serialize.loadTodos(TODO_DATA_FILE, this);
@@ -77,6 +116,8 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        registerForContextMenu(tdListView);
     }
 
     @Override
@@ -147,5 +188,6 @@ public class MainActivity extends AppCompatActivity
             tdListAdapter.notifyDataSetChanged();  // reference - https://stackoverflow.com/questions/2250770/how-to-refresh-android-listview
         }
     }
+
 
 }
