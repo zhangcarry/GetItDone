@@ -20,11 +20,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static final int CREATE_TODO_REQUEST = 1;
+    ArrayList al = new ArrayList();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,18 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        //setup listview
+        ListView list = findViewById(R.id.todo);
+        ArrayAdapter adaptor = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
+        list.setAdapter(adaptor);
+        //load data
+        List tempList = new ArrayList();
+        if (Serialize.loadTodos(getResources().getString(R.string.todos_data_file), getApplicationContext()) != null) {
+            tempList = Serialize.loadTodos(getResources().getString(R.string.todos_data_file), getApplicationContext());
+        }
+        al = (ArrayList) tempList;
+        adaptor.notifyDataSetChanged();
     }
 
     @Override
