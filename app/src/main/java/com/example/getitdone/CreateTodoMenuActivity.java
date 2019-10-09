@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -105,5 +106,11 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Dropdown menu for selecting priority
+        Spinner spinner = findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.task_priorities, android.R.layout.simple_spinner_item);
+        spinner.setAdapter(adapter);
     }
 }
