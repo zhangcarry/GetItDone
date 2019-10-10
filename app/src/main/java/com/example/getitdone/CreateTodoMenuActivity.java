@@ -52,12 +52,15 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
         final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
 
+        /**
+         * The date & time picker.
+         * @author Carry Zhang (u6499267)
+         */
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -91,6 +94,10 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * The floating action button.
+         * @author Carry Zhang (u6499267)
+         */
         final FloatingActionButton add = findViewById(R.id.addButton);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
