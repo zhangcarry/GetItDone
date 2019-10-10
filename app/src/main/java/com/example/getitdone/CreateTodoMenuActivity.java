@@ -16,6 +16,7 @@ import android.widget.TimePicker;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,7 +34,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_todo_menu);
 
-        final EditText editName = findViewById(R.id.editName);
+        final TextInputLayout editName = findViewById(R.id.editName);
         final Calendar myCalendar = Calendar.getInstance();
         final EditText edittext = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);
@@ -103,13 +104,12 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // If nothing entered, display prompt
-                String name = editName.getText().toString();
-                String date = edittext.getText().toString();
+                String name = editName.getEditText().getText().toString().trim();
                 String time = edittime.getText().toString();
                 if (name.equals("")) {
-                    editName.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
-                    Snackbar snackbar = Snackbar.make(view,"Name required",Snackbar.LENGTH_SHORT);
-                    snackbar.show();
+                    editName.setError("Title can't be empty");
+
+
                 }
                 else if (date.equals("") || (time.equals(""))){
                             edittext.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
@@ -125,7 +125,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
 
                     // Save to the data file
                     Todo td = new Todo();
-                    td.setName(editName.getText().toString());
+                    td.setName(name);
                     td.setPriority(getPriorityLevel(priority.getSelectedItem().toString()));
                     String dd = edittext.getText().toString();
                     String tt = edittime.getText().toString();
