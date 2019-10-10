@@ -6,6 +6,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -108,7 +110,22 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                 String time = edittime.getText().toString();
                 if (name.equals("")) {
                     editName.setError("Title can't be empty");
+                    editName.getEditText().addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        }
 
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (editName.isErrorEnabled()) {
+                                editName.setErrorEnabled(false);
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                        }
+                    });
 
                 }
                 else if (date.equals("") || (time.equals(""))){
