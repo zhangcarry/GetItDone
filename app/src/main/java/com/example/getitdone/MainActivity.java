@@ -1,14 +1,18 @@
 package com.example.getitdone;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.text.Editable;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -25,20 +29,29 @@ import android.view.Menu;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static final int CREATE_TODO_REQUEST = 1;
+    static final int edit_REQUEST = 0;
+    final String dateStr = "dd/MM/yy";
+    final String timeStr = "h:mm a";
+    final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
     List<Todo> todos = null;
     ListView tdListView;
     private ArrayAdapter tdListAdapter;
-    int pos = 0;
+    int pos = 1;
 
     // context menu
     @Override
@@ -61,17 +74,19 @@ public class MainActivity extends AppCompatActivity
             tdListAdapter.notifyDataSetChanged();
         }
         if (item.getItemId() == R.id.edit) {
-            List list2 = Serialize.loadTodos("todos.dat", this);
-            int index = list2.indexOf(tdListAdapter.getItem(pos).toString());
-            list2.set(index, "trash");
-            todos.clear();
-            todos.addAll(list2);
-            tdListAdapter.notifyDataSetChanged();
-            Serialize.saveTodos("todos.dat", list2, this);
+            Intent intent = new Intent(MainActivity.this, edit.class);
+            Todo todo = (Todo) tdListView.getItemAtPosition(pos);
+            intent.putExtra("name", todo.getName());
+            intent.putExtra("Date", todo.getDueDate());
+            intent.putExtra("priority", todo.getPriority());
+            intent.putExtra("pos", pos);
+            startActivityForResult(intent, edit_REQUEST);
+
         }
 
         return super.onContextItemSelected(item);
     }
+
 
 
     @Override
@@ -186,6 +201,26 @@ public class MainActivity extends AppCompatActivity
             todos = Serialize.loadTodos(TODO_DATA_FILE, this);
             tdListAdapter.addAll(todos);
             tdListAdapter.notifyDataSetChanged();  // reference - https://stackoverflow.com/questions/2250770/how-to-refresh-android-listview
+        }
+        if (resultCode == edit_REQUEST){
+            Intent intent = getIntent();
+            String name = intent.getStringExtra("name");
+            String date = intent.getStringExtra("date");
+            String priority = intent.getStringExtra("priority");
+            int pos = Integer.parseInt(intent.getStringExtra("pos"));
+            Todo todo = new Todo();
+            try {
+                todo = new Todo(name, dateAndTimeFormat.parse(date), Integer.parseInt(priority));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            List list = Serialize.loadTodos("todos.dat", this);
+            list.set(pos, todo);
+            Serialize.saveTodos("todos.dat", list, this);
+            Log.d("anything", list.toString());
+            tdListAdapter.addAll(list);
+            tdListAdapter.notifyDataSetChanged();
+
         }
     }
 
