@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static final int CREATE_TODO_REQUEST = 1;
+    static final int edit_REQUEST = 0;
     List<Todo> todos = null;
     ListView tdListView;
     private ArrayAdapter tdListAdapter;
@@ -61,13 +62,13 @@ public class MainActivity extends AppCompatActivity
             tdListAdapter.notifyDataSetChanged();
         }
         if (item.getItemId() == R.id.edit) {
-            List list2 = Serialize.loadTodos("todos.dat", this);
-            int index = list2.indexOf(tdListAdapter.getItem(pos).toString());
-            list2.set(index, "trash");
-            todos.clear();
-            todos.addAll(list2);
-            tdListAdapter.notifyDataSetChanged();
-            Serialize.saveTodos("todos.dat", list2, this);
+            Intent intent = new Intent(MainActivity.this, edit.class);
+            Todo todo = (Todo) tdListView.getItemAtPosition(pos);
+            intent.putExtra("name", todo.getName());
+            intent.putExtra("Date", todo.getDueDate());
+            intent.putExtra("priority", todo.getPriority());
+            intent.putExtra("pos", pos);
+            startActivityForResult(intent, edit_REQUEST);
         }
 
         return super.onContextItemSelected(item);
@@ -187,6 +188,15 @@ public class MainActivity extends AppCompatActivity
             tdListAdapter.addAll(todos);
             tdListAdapter.notifyDataSetChanged();  // reference - https://stackoverflow.com/questions/2250770/how-to-refresh-android-listview
         }
+        if (resultCode == edit_REQUEST){
+            tdListAdapter.clear();
+            final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
+            todos = Serialize.loadTodos(TODO_DATA_FILE, this);
+            tdListAdapter.addAll(todos);
+            tdListAdapter.notifyDataSetChanged();
+
+        }
+
     }
 
 
