@@ -33,6 +33,7 @@ public class edit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_todo_menu);
 
+        //variable
         final EditText editName = findViewById(R.id.editName);
         final Calendar myCalendar = Calendar.getInstance();
         final EditText edittext = findViewById(R.id.editDate);
@@ -61,6 +62,7 @@ public class edit extends AppCompatActivity {
         oldname = intent.getStringExtra("name");
         olddate = intent.getStringExtra("Date");
         oldpriority = intent.getStringExtra("priority");
+        pos = intent.getIntExtra("pos", 0);
 
         editName.setText(oldname);
         edittext.setText(olddate);
@@ -138,13 +140,10 @@ public class edit extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     td.setDueDate(dt);
-                    Intent back = new Intent(edit.this, MainActivity.class);
-                    back.putExtra("name", td.getName());
-                    back.putExtra("date", td.getDueDate());
-                    back.putExtra("priority", td.getPriority());
-
-                    startActivity(back);
-
+                    List load = Serialize.loadTodos("todos.dat", getApplicationContext());
+                    load.set(pos, td);
+                    Serialize.saveTodos("todos.dat", load, getApplicationContext());
+                    finish();
                 }
             }
         });

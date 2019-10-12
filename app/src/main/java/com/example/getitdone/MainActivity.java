@@ -203,22 +203,10 @@ public class MainActivity extends AppCompatActivity
             tdListAdapter.notifyDataSetChanged();  // reference - https://stackoverflow.com/questions/2250770/how-to-refresh-android-listview
         }
         if (resultCode == edit_REQUEST){
-            Intent intent = getIntent();
-            String name = intent.getStringExtra("name");
-            String date = intent.getStringExtra("date");
-            String priority = intent.getStringExtra("priority");
-            int pos = Integer.parseInt(intent.getStringExtra("pos"));
-            Todo todo = new Todo();
-            try {
-                todo = new Todo(name, dateAndTimeFormat.parse(date), Integer.parseInt(priority));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            List list = Serialize.loadTodos("todos.dat", this);
-            list.set(pos, todo);
-            Serialize.saveTodos("todos.dat", list, this);
-            Log.d("anything", list.toString());
-            tdListAdapter.addAll(list);
+            tdListAdapter.clear();
+            final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
+            todos = Serialize.loadTodos(TODO_DATA_FILE, this);
+            tdListAdapter.addAll(todos);
             tdListAdapter.notifyDataSetChanged();
 
         }
