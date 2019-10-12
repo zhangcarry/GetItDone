@@ -1,14 +1,18 @@
 package com.example.getitdone;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.text.Editable;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -25,21 +29,29 @@ import android.view.Menu;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static final int CREATE_TODO_REQUEST = 1;
     static final int edit_REQUEST = 0;
+    final String dateStr = "dd/MM/yy";
+    final String timeStr = "h:mm a";
+    final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
     List<Todo> todos = null;
     ListView tdListView;
     private ArrayAdapter tdListAdapter;
-    int pos = 0;
+    int pos = 1;
 
     // context menu
     @Override
@@ -69,10 +81,12 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("priority", todo.getPriority());
             intent.putExtra("pos", pos);
             startActivityForResult(intent, edit_REQUEST);
+
         }
 
         return super.onContextItemSelected(item);
     }
+
 
 
     @Override
@@ -196,7 +210,6 @@ public class MainActivity extends AppCompatActivity
             tdListAdapter.notifyDataSetChanged();
 
         }
-
     }
 
 

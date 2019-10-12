@@ -53,7 +53,7 @@
         tools:layout_conversion_wrapWidth="200" />
 
     <EditText
-        android:id="@+id/editName"
+        android:id="@+id/edittedName"
         android:layout_width="151dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
