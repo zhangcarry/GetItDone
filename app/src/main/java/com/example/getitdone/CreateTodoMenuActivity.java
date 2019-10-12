@@ -6,8 +6,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -18,7 +16,6 @@ import android.widget.TimePicker;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,7 +33,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_todo_menu);
 
-        final TextInputLayout editName = findViewById(R.id.editName);
+        final EditText editName = findViewById(R.id.editName);
         final Calendar myCalendar = Calendar.getInstance();
         final EditText edittext = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);
@@ -55,15 +52,12 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
         final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
 
-        /**
-         * The date & time picker.
-         * @author Carry Zhang (u6499267)
-         */
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
+                // TODO Auto-generated method stub
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -97,41 +91,23 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
             }
         });
 
-        /**
-         * The floating action button.
-         * @author Carry Zhang (u6499267)
-         */
         final FloatingActionButton add = findViewById(R.id.addButton);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // If nothing entered, display prompt
-                String name = editName.getEditText().getText().toString().trim();
+                String name = editName.getText().toString();
+                String date = edittext.getText().toString();
                 String time = edittime.getText().toString();
                 if (name.equals("")) {
-                    editName.setError("Title can't be empty");
-                    editName.getEditText().addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            if (editName.isErrorEnabled()) {
-                                editName.setErrorEnabled(false);
-                            }
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                        }
-                    });
-
+                    editName.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+                    Snackbar snackbar = Snackbar.make(view,"Name required",Snackbar.LENGTH_SHORT);
+                    snackbar.show();
                 }
                 else if (date.equals("") || (time.equals(""))){
-                            edittext.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
-                            Snackbar snackbar = Snackbar.make(view,"Date required",Snackbar.LENGTH_SHORT);
-                            snackbar.show();
+                    edittext.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+                    Snackbar snackbar = Snackbar.make(view,"Date required",Snackbar.LENGTH_SHORT);
+                    snackbar.show();
 
                 }
                 else {
@@ -142,7 +118,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
 
                     // Save to the data file
                     Todo td = new Todo();
-                    td.setName(name);
+                    td.setName(editName.getText().toString());
                     td.setPriority(getPriorityLevel(priority.getSelectedItem().toString()));
                     String dd = edittext.getText().toString();
                     String tt = edittime.getText().toString();

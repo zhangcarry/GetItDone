@@ -17,7 +17,6 @@ import android.widget.TimePicker;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +34,7 @@ public class edit extends AppCompatActivity {
         setContentView(R.layout.create_todo_menu);
 
         //variable
-        final EditText editName = findViewById(R.id.edittedName);
+        final EditText editName = findViewById(R.id.editName);
         final Calendar myCalendar = Calendar.getInstance();
         final EditText edittext = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);
@@ -64,6 +63,7 @@ public class edit extends AppCompatActivity {
         olddate = intent.getStringExtra("Date");
         oldpriority = intent.getStringExtra("priority");
         pos = intent.getIntExtra("pos", 0);
+
         editName.setText(oldname);
         edittext.setText(olddate);
 
