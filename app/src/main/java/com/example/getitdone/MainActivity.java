@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, edit.class);
             Todo todo = (Todo) tdListView.getItemAtPosition(pos);
             intent.putExtra("name", todo.getName());
-            intent.putExtra("Date", todo.getDueDate());
+            intent.putExtra("Date", todo.getDueDate().toString());
+            intent.putExtra("Time", todo.getDueTime().toString());
             intent.putExtra("priority", todo.getPriority());
             intent.putExtra("pos", pos);
             startActivityForResult(intent, edit_REQUEST);

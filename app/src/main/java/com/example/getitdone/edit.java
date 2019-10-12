@@ -31,7 +31,7 @@ public class edit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_todo_menu);
+        setContentView(R.layout.activity_edit);
 
         //variable
         final EditText editName = findViewById(R.id.editName);
@@ -45,6 +45,7 @@ public class edit extends AppCompatActivity {
         final ArrayAdapter ad;
         final String oldname;
         final String olddate;
+        final String oldtime;
         final String oldpriority;
         final int pos;
         ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
@@ -61,11 +62,13 @@ public class edit extends AppCompatActivity {
         Intent intent = getIntent();
         oldname = intent.getStringExtra("name");
         olddate = intent.getStringExtra("Date");
+        oldtime = intent.getStringExtra("Time");
         oldpriority = intent.getStringExtra("priority");
         pos = intent.getIntExtra("pos", 0);
 
         editName.setText(oldname);
         edittext.setText(olddate);
+        edittime.setText(oldtime);
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -133,13 +136,12 @@ public class edit extends AppCompatActivity {
                     td.setPriority(getPriorityLevel(priority.getSelectedItem().toString()));
                     String dd = edittext.getText().toString();
                     String tt = edittime.getText().toString();
-                    Date dt = null;
                     try {
-                        dt = dateAndTimeFormat.parse(dd+tt);
+                        td.setDueDate(dateFormat.parse(dd));
+                        td.setDueTime(timeFormat.parse(tt));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    td.setDueDate(dt);
                     List load = Serialize.loadTodos("todos.dat", getApplicationContext());
                     load.set(pos, td);
                     Serialize.saveTodos("todos.dat", load, getApplicationContext());

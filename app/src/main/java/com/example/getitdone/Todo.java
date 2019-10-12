@@ -17,11 +17,13 @@ public class Todo implements Serializable {
      */
     private String todoName;
     private Date dueDate;
+    private Date dueTime;
     private int priority;  // 1 - highest priority, 5 - lowest priority
 
-    public Todo(String todoName, Date dueDate, int priority) {
+    public Todo(String todoName, Date dueDate, Date dueTime, int priority) {
         this.todoName = todoName;
         this.dueDate = dueDate;
+        this.dueTime = dueTime;
         this.priority = priority;
     }
 
@@ -33,6 +35,7 @@ public class Todo implements Serializable {
     public Todo(String todoName) {
         this.todoName = todoName;
         this.dueDate = null;  // no due-date
+        this.dueTime = null;
         this.priority = 5;
     }
 
@@ -55,6 +58,9 @@ public class Todo implements Serializable {
     public Date getDueDate() {
         return this.dueDate;
     }
+    public Date getDueTime() {
+        return this.dueTime;
+    }
 
     public void setName(String newName) {
         this.todoName = newName;
@@ -62,6 +68,10 @@ public class Todo implements Serializable {
 
     public void setDueDate(Date newDate) {
         this.dueDate = newDate;
+    }
+
+    public void setDueTime(Date newTime) {
+        this.dueTime = newTime;
     }
 
     public void setPriority(int newPriority) {
@@ -74,6 +84,7 @@ public class Todo implements Serializable {
         Todo otherTodo = (Todo) obj;
         return this.todoName.equals(otherTodo.todoName) &&
                 this.dueDate.equals(otherTodo.dueDate) &&
+                this.dueTime.equals(otherTodo.dueTime) &&
                 this.priority == otherTodo.priority;
     }
 
@@ -82,6 +93,7 @@ public class Todo implements Serializable {
         StringBuilder hashStr = new StringBuilder();
         hashStr.append(this.todoName);
         hashStr.append(this.dueDate.toString());
+        hashStr.append(this.dueTime.toString());
         hashStr.append(this.priority);
         return hashStr.hashCode();
     }

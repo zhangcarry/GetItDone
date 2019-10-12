@@ -35,7 +35,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
 
         final EditText editName = findViewById(R.id.editName);
         final Calendar myCalendar = Calendar.getInstance();
-        final EditText edittext = findViewById(R.id.editDate);
+        final EditText editdate = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);
         final Spinner priority = findViewById(R.id.spinner);
         View inflatedView = getLayoutInflater().inflate(R.layout.activity_main, null);
@@ -61,12 +61,12 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                edittext.setText(dateFormat.format(myCalendar.getTime()));
+                editdate.setText(dateFormat.format(myCalendar.getTime()));
             }
 
         };
 
-        edittext.setOnClickListener(new View.OnClickListener() {
+        editdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(CreateTodoMenuActivity.this, date, myCalendar
@@ -97,7 +97,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // If nothing entered, display prompt
                 String name = editName.getText().toString();
-                String date = edittext.getText().toString();
+                String date = editdate.getText().toString();
                 String time = edittime.getText().toString();
                 if (name.equals("")) {
                     editName.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
@@ -105,30 +105,25 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     snackbar.show();
                 }
                 else if (date.equals("") || (time.equals(""))){
-                    edittext.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+                    editdate.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
                     Snackbar snackbar = Snackbar.make(view,"Date required",Snackbar.LENGTH_SHORT);
                     snackbar.show();
 
                 }
                 else {
-                    // Add item to list
-                    al.add(name);
-                    ad.notifyDataSetChanged();
-                    // finish();
 
                     // Save to the data file
                     Todo td = new Todo();
                     td.setName(editName.getText().toString());
                     td.setPriority(getPriorityLevel(priority.getSelectedItem().toString()));
-                    String dd = edittext.getText().toString();
+                    String dd = editdate.getText().toString();
                     String tt = edittime.getText().toString();
-                    Date dt = null;
                     try {
-                        dt = dateAndTimeFormat.parse(dd+tt);
+                        td.setDueDate(dateFormat.parse(dd));
+                        td.setDueTime(timeFormat.parse(tt));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    td.setDueDate(dt);
                     final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
                     List<Todo> todos = Serialize.loadTodos(TODO_DATA_FILE, getApplicationContext());
                     todos.add(td);
