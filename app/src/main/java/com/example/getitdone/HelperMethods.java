@@ -18,7 +18,7 @@ public class HelperMethods {
      * @return filtered list of to-dos
      */
     public List<Todo> getTodoList(Filter filter, Context context) {
-        List<Todo> todos = Serialize.loadTodos(getDataFile(context), context);
+        List<Todo> todos = Serialize.loadTodos(context);
         List<Todo> filteredTodo = new ArrayList<>();
 
         switch (filter) {
