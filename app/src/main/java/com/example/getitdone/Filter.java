@@ -1,5 +1,5 @@
 package com.example.getitdone;
 
 public enum Filter {
-    Completed, Uncompleted
+    Completed, Uncompleted, All
 }
