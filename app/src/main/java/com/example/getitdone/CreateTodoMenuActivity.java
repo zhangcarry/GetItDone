@@ -120,10 +120,9 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     String tt = edittime.getText().toString();
                         td.setDueDate(dd);
                         td.setDueTime(tt);
-                    final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
-                    List<Todo> todos = Serialize.loadTodos(TODO_DATA_FILE, getApplicationContext());
+                    List<Todo> todos = Serialize.loadTodos(getApplicationContext());
                     todos.add(td);
-                    Serialize.saveTodos(TODO_DATA_FILE, todos, getApplicationContext());
+                    Serialize.saveTodos(todos, getApplicationContext());
                     finish();
                 }
             }
