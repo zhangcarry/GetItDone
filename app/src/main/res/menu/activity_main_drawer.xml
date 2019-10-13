@@ -5,24 +5,16 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:id="@+id/nav_remaining"
+            android:icon="@android:drawable/checkbox_off_background"
+            android:title="@string/nav_remaining_todo"/>
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
-        <item
-            android:id="@+id/nav_tools"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_tools" />
+            android:id="@+id/nav_completed"
+            android:icon="@android:drawable/checkbox_on_background"
+            android:title="@string/nav_completed_text" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Other filters">
         <menu>
             <item
                 android:id="@+id/nav_share"
