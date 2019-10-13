@@ -136,12 +136,8 @@ public class edit extends AppCompatActivity {
                     td.setPriority(getPriorityLevel(priority.getSelectedItem().toString()));
                     String dd = edittext.getText().toString();
                     String tt = edittime.getText().toString();
-                    try {
-                        td.setDueDate(dateFormat.parse(dd));
-                        td.setDueTime(timeFormat.parse(tt));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                        td.setDueDate(dd);
+                        td.setDueTime(tt);
                     List load = Serialize.loadTodos("todos.dat", getApplicationContext());
                     load.set(pos, td);
                     Serialize.saveTodos("todos.dat", load, getApplicationContext());

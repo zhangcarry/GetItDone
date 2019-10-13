@@ -45,9 +45,13 @@ public class MainActivity extends AppCompatActivity
 
     static final int CREATE_TODO_REQUEST = 1;
     static final int edit_REQUEST = 0;
+    // data and time formats
     final String dateStr = "dd/MM/yy";
     final String timeStr = "h:mm a";
+    final SimpleDateFormat dateFormat = new SimpleDateFormat(dateStr, Locale.UK);
+    final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
     final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
+
     List<Todo> todos = null;
     ListView tdListView;
     private ArrayAdapter tdListAdapter;

@@ -16,11 +16,11 @@ public class Todo implements Serializable {
      * Various information about the to-do.
      */
     private String todoName;
-    private Date dueDate;
-    private Date dueTime;
+    private String dueDate;
+    private String dueTime;
     private int priority;  // 1 - highest priority, 5 - lowest priority
 
-    public Todo(String todoName, Date dueDate, Date dueTime, int priority) {
+    public Todo(String todoName, String dueDate, String dueTime, int priority) {
         this.todoName = todoName;
         this.dueDate = dueDate;
         this.dueTime = dueTime;
@@ -55,10 +55,10 @@ public class Todo implements Serializable {
      * check the return value.
      * @return due-date of to-do
      */
-    public Date getDueDate() {
+    public String getDueDate() {
         return this.dueDate;
     }
-    public Date getDueTime() {
+    public String getDueTime() {
         return this.dueTime;
     }
 
@@ -66,11 +66,11 @@ public class Todo implements Serializable {
         this.todoName = newName;
     }
 
-    public void setDueDate(Date newDate) {
+    public void setDueDate(String newDate) {
         this.dueDate = newDate;
     }
 
-    public void setDueTime(Date newTime) {
+    public void setDueTime(String newTime) {
         this.dueTime = newTime;
     }
 
@@ -92,8 +92,8 @@ public class Todo implements Serializable {
     public int hashCode() {
         StringBuilder hashStr = new StringBuilder();
         hashStr.append(this.todoName);
-        hashStr.append(this.dueDate.toString());
-        hashStr.append(this.dueTime.toString());
+        hashStr.append(this.dueDate);
+        hashStr.append(this.dueTime);
         hashStr.append(this.priority);
         return hashStr.hashCode();
     }

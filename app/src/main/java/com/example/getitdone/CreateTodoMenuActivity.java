@@ -118,12 +118,8 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     td.setPriority(getPriorityLevel(priority.getSelectedItem().toString()));
                     String dd = editdate.getText().toString();
                     String tt = edittime.getText().toString();
-                    try {
-                        td.setDueDate(dateFormat.parse(dd));
-                        td.setDueTime(timeFormat.parse(tt));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                        td.setDueDate(dd);
+                        td.setDueTime(tt);
                     final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
                     List<Todo> todos = Serialize.loadTodos(TODO_DATA_FILE, getApplicationContext());
                     todos.add(td);
