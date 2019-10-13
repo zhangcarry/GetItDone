@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +53,7 @@ public class Serialize {
             Log.d("Serialize", file.getName() + " doesn't exist yet");
             try {
                 file.createNewFile();
+                saveTodos(new ArrayList<Todo>(), appContext);
             } catch (IOException e) {
                 e.printStackTrace();
             }
