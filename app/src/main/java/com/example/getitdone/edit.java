@@ -138,9 +138,9 @@ public class edit extends AppCompatActivity {
                     String tt = edittime.getText().toString();
                         td.setDueDate(dd);
                         td.setDueTime(tt);
-                    List load = Serialize.loadTodos("todos.dat", getApplicationContext());
+                    List load = Serialize.loadTodos(getApplicationContext());
                     load.set(pos, td);
-                    Serialize.saveTodos("todos.dat", load, getApplicationContext());
+                    Serialize.saveTodos(load, getApplicationContext());
                     finish();
                 }
             }
