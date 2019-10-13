@@ -19,6 +19,7 @@ public class Todo implements Serializable {
     private String dueDate;
     private String dueTime;
     private int priority;  // 1 - highest priority, 5 - lowest priority
+    private boolean completed = false;
 
     public Todo(String todoName, String dueDate, String dueTime, int priority) {
         this.todoName = todoName;
@@ -40,6 +41,8 @@ public class Todo implements Serializable {
     }
 
     public Todo() {}
+
+    public boolean isCompleted() {return  this.completed; }
 
     public String getName() {
         return this.todoName;
