@@ -29,7 +29,9 @@ import android.view.Menu;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 
@@ -52,6 +54,12 @@ public class MainActivity extends AppCompatActivity
     final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
     final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
 
+    // tells getTodoList function what filter to use
+    private Filter filter = Filter.Uncompleted;
+
+    // Use this to call helper methods
+    HelperMethods helpers = new HelperMethods();
+
     List<Todo> todos = null;
     ListView tdListView;
     private ArrayAdapter tdListAdapter;
@@ -70,9 +78,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.delete) {
-            List list = Serialize.loadTodos("todos.dat", this);
+            List list = helpers.getTodoList(filter, this);
             list.remove(tdListView.getItemAtPosition(pos));
-            Serialize.saveTodos("todos.dat", list, this);
+            Serialize.saveTodos(list, this);
             tdListAdapter.clear();
             tdListAdapter.addAll(list);
             tdListAdapter.notifyDataSetChanged();
@@ -118,16 +126,8 @@ public class MainActivity extends AppCompatActivity
         });
 
         // list to-dos
-        final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
-        todos = Serialize.loadTodos(TODO_DATA_FILE, this);
-        if (todos == null) {
-            Serialize.saveTodos(TODO_DATA_FILE, new ArrayList<Todo>(), this);
-            todos = Serialize.loadTodos(TODO_DATA_FILE, this);
-        }
-        tdListView = findViewById(R.id.todo);
-        tdListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
-        tdListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, todos);
-        tdListView.setAdapter(tdListAdapter);
+        initTodoListView();
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -138,6 +138,31 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         registerForContextMenu(tdListView);
+    }
+
+    private void initTodoListView() {
+        todos = helpers.getTodoList(filter, this);
+        tdListView = findViewById(R.id.todo);
+        tdListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        tdListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, todos);
+        tdListView.setAdapter(tdListAdapter);
+
+        AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView lv = (ListView) parent;
+                if (lv.isItemChecked(position)){
+                    todos.get(position).setComplete();
+                    Serialize.saveTodos(todos, getApplicationContext());
+                    todos = helpers.getTodoList(filter, getApplicationContext());
+                    tdListAdapter.clear();
+                    tdListAdapter.addAll(todos);
+                    tdListAdapter.notifyDataSetChanged();
+                    lv.setItemChecked(position, false);
+                }
+            }
+        };
+        tdListView.setOnItemClickListener(onItemClickListener);
     }
 
     @Override
@@ -202,15 +227,13 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CREATE_TODO_REQUEST) {
             tdListAdapter.clear();
-            final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
-            todos = Serialize.loadTodos(TODO_DATA_FILE, this);
+            todos = helpers.getTodoList(filter, this);
             tdListAdapter.addAll(todos);
             tdListAdapter.notifyDataSetChanged();  // reference - https://stackoverflow.com/questions/2250770/how-to-refresh-android-listview
         }
         if (resultCode == edit_REQUEST){
             tdListAdapter.clear();
-            final String TODO_DATA_FILE = getResources().getString(R.string.todos_data_file);
-            todos = Serialize.loadTodos(TODO_DATA_FILE, this);
+            todos = helpers.getTodoList(filter, this);
             tdListAdapter.addAll(todos);
             tdListAdapter.notifyDataSetChanged();
 
