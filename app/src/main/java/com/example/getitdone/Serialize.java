@@ -25,7 +25,6 @@ public class Serialize {
         // If the file doesn't exists yet, then create it
         File file = new File(helpers.getDataFile(appContext));
         if (!file.exists()) {
-            Log.d("Serialize", file.getName() + " doesn't exist yet");
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -50,7 +49,6 @@ public class Serialize {
         // If the file doesn't exists yet, then create it
         File file = new File(helpers.getDataFile(appContext));
         if (!file.exists()) {
-            Log.d("Serialize", file.getName() + " doesn't exist yet");
             try {
                 file.createNewFile();
                 saveTodos(new ArrayList<Todo>(), appContext);
