@@ -18,9 +18,11 @@ import java.util.List;
  */
 public class Serialize {
 
-    public static void saveTodos(String filename, List<Todo> todos, Context appContext) {
+    public static void saveTodos(List<Todo> todos, Context appContext) {
+        HelperMethods helpers = new HelperMethods();
+        String filename = helpers.getDataFile(appContext);
         // If the file doesn't exists yet, then create it
-        File file = new File(new HelperMethods().getDataFile(appContext));
+        File file = new File(helpers.getDataFile(appContext));
         if (!file.exists()) {
             Log.d("Serialize", file.getName() + " doesn't exist yet");
             try {
@@ -41,9 +43,11 @@ public class Serialize {
         }
     }
 
-    public static List<Todo> loadTodos(String filename, Context appContext) {
+    public static List<Todo> loadTodos(Context appContext) {
+        HelperMethods helpers = new HelperMethods();
+        String filename = helpers.getDataFile(appContext);
         // If the file doesn't exists yet, then create it
-        File file = new File(new HelperMethods().getDataFile(appContext));
+        File file = new File(helpers.getDataFile(appContext));
         if (!file.exists()) {
             Log.d("Serialize", file.getName() + " doesn't exist yet");
             try {
