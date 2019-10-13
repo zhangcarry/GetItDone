@@ -197,20 +197,24 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private void updateFilterAndRefreshList(Filter newFilter) {
+        filter = newFilter;
+        todos = helpers.getTodoList(filter, this);
+        tdListAdapter.clear();
+        tdListAdapter.addAll(todos);
+        tdListAdapter.notifyDataSetChanged();
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
+        if (id == R.id.nav_remaining) {
+            updateFilterAndRefreshList(Filter.Uncompleted);
+        } else if (id == R.id.nav_completed) {
+            updateFilterAndRefreshList(Filter.Completed);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
