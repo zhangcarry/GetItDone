@@ -1,7 +1,9 @@
 package com.example.getitdone;
 
 import android.content.Context;
+import android.util.Log;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +19,17 @@ import java.util.List;
 public class Serialize {
 
     public static void saveTodos(String filename, List<Todo> todos, Context appContext) {
+        // If the file doesn't exists yet, then create it
+        File file = new File(new HelperMethods().getDataFile(appContext));
+        if (!file.exists()) {
+            Log.d("Serialize", file.getName() + " doesn't exist yet");
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         try {
             FileOutputStream outputStream = appContext.openFileOutput(filename, Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(outputStream);
@@ -29,6 +42,17 @@ public class Serialize {
     }
 
     public static List<Todo> loadTodos(String filename, Context appContext) {
+        // If the file doesn't exists yet, then create it
+        File file = new File(new HelperMethods().getDataFile(appContext));
+        if (!file.exists()) {
+            Log.d("Serialize", file.getName() + " doesn't exist yet");
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         List<Todo> todos = null;
         try {
             FileInputStream fin = appContext.openFileInput(filename);
