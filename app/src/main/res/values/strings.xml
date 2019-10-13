@@ -20,4 +20,5 @@
     <string name="save_todo">Save</string>
     <string name="task_priority">Priority :</string>
     <string name="todos_data_file">todos.dat</string>
+    <string name="app_description">The ultimate Todo manager</string>
 </resources>
