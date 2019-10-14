@@ -33,6 +33,7 @@ import android.widget.DatePicker;
 import android.widget.ListView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity
     final SimpleDateFormat dateFormat = new SimpleDateFormat(dateStr, Locale.UK);
     final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
     final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
+    String dateSelected = "";
 
     // tells getTodoList function what filter to use
     private Filter filter = Filter.Uncompleted;
@@ -234,7 +236,19 @@ public class MainActivity extends AppCompatActivity
                     myCalendar.set(Calendar.MONTH, monthOfYear);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     // The selected date
-                    String dateSelected = sdf.format(myCalendar.getTime());
+                    dateSelected = sdf.format(myCalendar.getTime());
+
+                    List<Todo> todos = helpers.getTodoList(Filter.All, MainActivity.this);
+                    List<Todo> dateTodo = new ArrayList<>();
+                    for (Todo todo : todos){
+                        if (todo.getDueDate().equals(dateSelected)){
+                            dateTodo.add(todo);
+                        }
+                    }
+                    tdListAdapter.clear();
+                    tdListAdapter.addAll(dateTodo);
+                    tdListAdapter.notifyDataSetChanged();
+
                 }
 
                 };
@@ -242,7 +256,10 @@ public class MainActivity extends AppCompatActivity
             new DatePickerDialog(MainActivity.this, date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+
         }
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
