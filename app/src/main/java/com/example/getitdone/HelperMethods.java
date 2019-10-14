@@ -76,6 +76,9 @@ public class HelperMethods {
             ObjectOutputStream oos = new ObjectOutputStream(outputStream);
             List<Todo> todos = new ArrayList<>();
             todos.add(new Todo("Welcome to GetItDone"));
+            Todo sample_completed = new Todo("sample completed todo");
+            sample_completed.setComplete();
+            todos.add(sample_completed);
             oos.writeObject(todos);
             oos.close();
             outputStream.close();
