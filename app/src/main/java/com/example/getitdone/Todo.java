@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Todo implements Serializable {
 
-    private static final long serialVersionUID = 6102019300L;
+    private static final long serialVersionUID = 141020191250L;
 
     /**
      * Various information about the to-do.
