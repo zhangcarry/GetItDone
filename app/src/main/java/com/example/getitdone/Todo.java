@@ -107,6 +107,6 @@ public class Todo implements Serializable {
 
     @Override
     public String toString() {
-        return this.todoName + " " + this.completed;
+        return this.todoName;
     }
 }
