@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
     final SimpleDateFormat dateFormat = new SimpleDateFormat(dateStr, Locale.UK);
     final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
     final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
-    String dateSelected = "";
+
 
     // tells getTodoList function what filter to use
     private Filter filter = Filter.Uncompleted;
@@ -236,19 +236,7 @@ public class MainActivity extends AppCompatActivity
                     myCalendar.set(Calendar.MONTH, monthOfYear);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     // The selected date
-                    dateSelected = sdf.format(myCalendar.getTime());
-
-                    List<Todo> todos = helpers.getTodoList(Filter.All, MainActivity.this);
-                    List<Todo> dateTodo = new ArrayList<>();
-                    for (Todo todo : todos){
-                        if (todo.getDueDate().equals(dateSelected)){
-                            dateTodo.add(todo);
-                        }
-                    }
-                    tdListAdapter.clear();
-                    tdListAdapter.addAll(dateTodo);
-                    tdListAdapter.notifyDataSetChanged();
-
+                    String dateSelected = sdf.format(myCalendar.getTime());
                 }
 
                 };
