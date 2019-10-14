@@ -69,6 +69,8 @@
         tools:layout_conversion_wrapHeight="118"
         tools:layout_conversion_wrapWidth="396" />
 
+
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="79dp"
@@ -119,7 +121,7 @@
         android:tint="#EEEEEE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@drawable/ic_check" />
 
     <Spinner
         android:id="@+id/spinner"
