@@ -1,18 +1,15 @@
 package com.example.getitdone;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import android.text.Editable;
-import android.util.Log;
+
 import android.view.ContextMenu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -29,16 +26,10 @@ import android.view.Menu;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -79,11 +70,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.delete) {
             List list = helpers.getTodoList(filter, this);
-            list.remove(tdListView.getItemAtPosition(pos));
-            Serialize.saveTodos(list, this);
-            tdListAdapter.clear();
-            tdListAdapter.addAll(list);
-            tdListAdapter.notifyDataSetChanged();
+            Todo toRemove = (Todo) tdListView.getItemAtPosition(pos);
+            helpers.deleteTodo(toRemove, getApplicationContext());
+            refreshTodoList();
         }
         if (item.getItemId() == R.id.edit) {
             Intent intent = new Intent(MainActivity.this, edit.class);
@@ -94,7 +83,6 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("priority", todo.getPriority());
             intent.putExtra("pos", pos);
             startActivityForResult(intent, edit_REQUEST);
-
         }
 
         return super.onContextItemSelected(item);
@@ -152,17 +140,27 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView lv = (ListView) parent;
                 if (lv.isItemChecked(position)){
-                    todos.get(position).setComplete();
-                    Serialize.saveTodos(todos, getApplicationContext());
-                    todos = helpers.getTodoList(filter, getApplicationContext());
-                    tdListAdapter.clear();
-                    tdListAdapter.addAll(todos);
-                    tdListAdapter.notifyDataSetChanged();
                     lv.setItemChecked(position, false);
+                    // update the data file
+                    Todo completedTodo = (Todo) lv.getItemAtPosition(position);
+                    helpers.setTodoAsCompleted(completedTodo, getApplicationContext());
+                    // update the list view
+                    refreshTodoList();
                 }
             }
         };
         tdListView.setOnItemClickListener(onItemClickListener);
+    }
+
+    /**
+     * Refresh the list view.
+     * reference - https://stackoverflow.com/questions/2250770/how-to-refresh-android-listview
+     */
+    private void refreshTodoList() {
+        todos = helpers.getTodoList(filter, getApplicationContext());
+        tdListAdapter.clear();
+        tdListAdapter.addAll(todos);
+        tdListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -199,10 +197,7 @@ public class MainActivity extends AppCompatActivity
 
     private void updateFilterAndRefreshList(Filter newFilter) {
         filter = newFilter;
-        todos = helpers.getTodoList(filter, this);
-        tdListAdapter.clear();
-        tdListAdapter.addAll(todos);
-        tdListAdapter.notifyDataSetChanged();
+        refreshTodoList();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -230,17 +225,10 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CREATE_TODO_REQUEST) {
-            tdListAdapter.clear();
-            todos = helpers.getTodoList(filter, this);
-            tdListAdapter.addAll(todos);
-            tdListAdapter.notifyDataSetChanged();  // reference - https://stackoverflow.com/questions/2250770/how-to-refresh-android-listview
+            refreshTodoList();
         }
         if (resultCode == edit_REQUEST){
-            tdListAdapter.clear();
-            todos = helpers.getTodoList(filter, this);
-            tdListAdapter.addAll(todos);
-            tdListAdapter.notifyDataSetChanged();
-
+            refreshTodoList();
         }
     }
 

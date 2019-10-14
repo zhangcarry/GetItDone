@@ -21,19 +21,10 @@ public class Serialize {
 
     public static void saveTodos(List<Todo> todos, Context appContext) {
         HelperMethods helpers = new HelperMethods();
-        String filename = helpers.getDataFile(appContext);
-        // If the file doesn't exists yet, then create it
-        File file = new File(helpers.getDataFile(appContext));
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        File dataFile = helpers.getDataFile(appContext);
 
         try {
-            FileOutputStream outputStream = appContext.openFileOutput(filename, Context.MODE_PRIVATE);
+            FileOutputStream outputStream = appContext.openFileOutput(dataFile.getName(), Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(outputStream);
             oos.writeObject(todos);
             oos.close();
@@ -45,21 +36,11 @@ public class Serialize {
 
     public static List<Todo> loadTodos(Context appContext) {
         HelperMethods helpers = new HelperMethods();
-        String filename = helpers.getDataFile(appContext);
-        // If the file doesn't exists yet, then create it
-        File file = new File(helpers.getDataFile(appContext));
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-                saveTodos(new ArrayList<Todo>(), appContext);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
+        File dataFile = helpers.getDataFile(appContext);
         List<Todo> todos = null;
+
         try {
-            FileInputStream fin = appContext.openFileInput(filename);
+            FileInputStream fin = appContext.openFileInput(dataFile.getName());
             ObjectInputStream ois = new ObjectInputStream(fin);
 
             todos = (List<Todo>) ois.readObject();
@@ -72,6 +53,7 @@ public class Serialize {
             e.printStackTrace();
         }
 
+        if (todos == null) return new ArrayList<>();
         return todos;
     }
 }
