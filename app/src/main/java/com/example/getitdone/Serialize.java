@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,7 +30,10 @@ public class Serialize {
             oos.writeObject(todos);
             oos.close();
             outputStream.close();
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
+            Log.d("GetItDone Log", "file not found");
+            e.printStackTrace();
+        }catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -47,6 +51,9 @@ public class Serialize {
 
             ois.close();
             fin.close();
+        } catch (FileNotFoundException e) {
+            Log.d("GetItDone Log", "file not found");
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

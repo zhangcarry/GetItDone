@@ -33,6 +33,9 @@ public class edit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
+        // helper methods
+        final HelperMethods helpers = new HelperMethods();
+
         //variable
         final EditText editName = findViewById(R.id.editName);
         final Calendar myCalendar = Calendar.getInstance();
@@ -136,11 +139,9 @@ public class edit extends AppCompatActivity {
                     td.setPriority(getPriorityLevel(priority.getSelectedItem().toString()));
                     String dd = edittext.getText().toString();
                     String tt = edittime.getText().toString();
-                        td.setDueDate(dd);
-                        td.setDueTime(tt);
-                    List load = Serialize.loadTodos(getApplicationContext());
-                    load.set(pos, td);
-                    Serialize.saveTodos(load, getApplicationContext());
+                    td.setDueDate(dd);
+                    td.setDueTime(tt);
+                    helpers.addNewTodo(td, getApplicationContext());
                     finish();
                 }
             }

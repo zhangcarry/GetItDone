@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Todo implements Serializable {
 
-    private static final long serialVersionUID = 141020191250L;
+    private static final long serialVersionUID = 14102019540L;
 
     /**
      * Various information about the to-do.
@@ -90,7 +90,8 @@ public class Todo implements Serializable {
         return this.todoName.equals(otherTodo.todoName) &&
                 this.dueDate.equals(otherTodo.dueDate) &&
                 this.dueTime.equals(otherTodo.dueTime) &&
-                this.priority == otherTodo.priority;
+                this.priority == otherTodo.priority &&
+                this.isCompleted() == otherTodo.isCompleted();
     }
 
     @Override
@@ -100,11 +101,12 @@ public class Todo implements Serializable {
         hashStr.append(this.dueDate);
         hashStr.append(this.dueTime);
         hashStr.append(this.priority);
+        hashStr.append(this.completed);
         return hashStr.hashCode();
     }
 
     @Override
     public String toString() {
-        return this.todoName;
+        return this.todoName + " " + this.completed;
     }
 }

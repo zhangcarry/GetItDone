@@ -1,9 +1,13 @@
 package com.example.getitdone;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,15 +57,34 @@ public class HelperMethods {
      */
     public File getDataFile(Context context) {
         String filename = context.getResources().getString(R.string.todos_data_file);
-        String dirName = context.getResources().getString(R.string.data_file_directory);
-        File directory = context.getDir(dirName, Context.MODE_PRIVATE);
-        File dataFile = new File(directory, filename);
+        File privateFolder = context.getFilesDir();
+        File dataFile = new File(privateFolder, filename);
         try {
-            dataFile.createNewFile();
+            if (dataFile.createNewFile()) {
+                createEmptyDataFile(dataFile, context);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return dataFile;
+    }
+
+    private void createEmptyDataFile(File dataFile, Context context) {
+        try {
+            FileOutputStream outputStream = context.openFileOutput(dataFile.getName(), Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+            List<Todo> todos = new ArrayList<>();
+            todos.add(new Todo("Welcome to GetItDone"));
+            oos.writeObject(todos);
+            oos.close();
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            Log.d("GetItDone Log", "file not found");
+            e.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

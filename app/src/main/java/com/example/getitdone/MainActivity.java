@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-
 import android.view.ContextMenu;
 import android.view.View;
 
@@ -21,13 +20,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import android.view.Menu;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -73,8 +73,7 @@ public class MainActivity extends AppCompatActivity
             Todo toRemove = (Todo) tdListView.getItemAtPosition(pos);
             helpers.deleteTodo(toRemove, getApplicationContext());
             refreshTodoList();
-        }
-        if (item.getItemId() == R.id.edit) {
+        } else if (item.getItemId() == R.id.edit) {
             Intent intent = new Intent(MainActivity.this, edit.class);
             Todo todo = (Todo) tdListView.getItemAtPosition(pos);
             intent.putExtra("name", todo.getName());
@@ -82,6 +81,7 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("Time", todo.getDueTime().toString());
             intent.putExtra("priority", todo.getPriority());
             intent.putExtra("pos", pos);
+            helpers.deleteTodo(todo, getApplicationContext());  // so that there will not be duplicate
             startActivityForResult(intent, edit_REQUEST);
         }
 
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
