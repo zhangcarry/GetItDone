@@ -6,12 +6,16 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_remaining"
-            android:icon="@android:drawable/checkbox_off_background"
+            android:icon="@drawable/ic_inbox"
             android:title="@string/nav_remaining_todo"/>
         <item
             android:id="@+id/nav_completed"
-            android:icon="@android:drawable/checkbox_on_background"
+            android:icon="@drawable/ic_check_box"
             android:title="@string/nav_completed_text" />
+        <item
+            android:id="@+id/forecast"
+            android:icon="@drawable/ic_calendar_today"
+            android:title="@string/nav_forecast" />
     </group>
 
     <item android:title="Other filters">
