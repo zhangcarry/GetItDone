@@ -228,9 +228,13 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear,
                                       int dayOfMonth) {
+                    String myFormat = "dd/MM/yy"; //In which you need put here
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
                     myCalendar.set(Calendar.YEAR, year);
                     myCalendar.set(Calendar.MONTH, monthOfYear);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    // The selected date
+                    String dateSelected = sdf.format(myCalendar.getTime());
                 }
 
                 };
