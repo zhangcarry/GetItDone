@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity
     final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
     String dateSelected;
 
-
     // tells getTodoList function what filter to use
     private Filter filter = Filter.Uncompleted;
 
@@ -127,6 +126,8 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        // Select the first item as default
+        navigationView.getMenu().getItem(0).setChecked(true);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -218,11 +219,12 @@ public class MainActivity extends AppCompatActivity
             updateFilterAndRefreshList(Filter.Uncompleted);
         } else if (id == R.id.nav_completed) {
             updateFilterAndRefreshList(Filter.Completed);
+        } else if (id == R.id.nav_priority) {
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
-        } else if (id == R.id.forecast) {
+        } else if (id == R.id.nav_forecast) {
 
             final Calendar myCalendar = Calendar.getInstance();
 
@@ -253,11 +255,20 @@ public class MainActivity extends AppCompatActivity
 
                 };
 
-            new DatePickerDialog(MainActivity.this, date, myCalendar
+            DatePickerDialog datePicker = new DatePickerDialog(MainActivity.this, date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                    myCalendar.get(Calendar.DAY_OF_MONTH));
+            datePicker.show();
+            datePicker.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    // Go back to inbox if no date is selected
+                    updateFilterAndRefreshList(Filter.Uncompleted);
+                    NavigationView navigationView = findViewById(R.id.nav_view);
+                    navigationView.getMenu().getItem(0).setChecked(true);
 
-
+                }
+            });
         }
 
 

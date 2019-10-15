@@ -20,10 +20,11 @@
     <string name="edit_time">Time</string>
     <string name="save_todo">Save</string>
     <string name="task_priority">Priority :</string>
+    <string name="nav_priority">Prioritised</string>
     <string name="todos_data_file">todos.dat</string>
     <string name="app_description">The ultimate Todo manager</string>
-    <string name="nav_completed_text">Completed Todos</string>
-    <string name="nav_remaining_todo">Remaining Todos</string>
+    <string name="nav_completed_text">Completed</string>
+    <string name="nav_remaining_todo">Inbox</string>
     <string name="nav_forecast">Forecast</string>
 
     <string name="data_file_directory">data_files</string>
