@@ -129,6 +129,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     List<Todo> todos = Serialize.loadTodos(getApplicationContext());
                     todos.add(td);
                     Serialize.saveTodos(todos, getApplicationContext());
+
                     finish();
                 }
             }

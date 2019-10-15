@@ -6,6 +6,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
+import android.graphics.Color;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -41,6 +45,7 @@ import android.widget.ListView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -152,6 +157,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         registerForContextMenu(tdListView);
+
+        shortcutManager();
     }
 
     private void initTodoListView() {
@@ -215,6 +222,7 @@ public class MainActivity extends AppCompatActivity
                 .setContentTitle("Reminder")
                 .setContentText("Test message")
                 .setContentIntent(contentIntent)
+                .setColor(Color.rgb(103,58,183))
                 .build();
 
         notificationManagerCompat.notify(1,notification);
@@ -255,6 +263,22 @@ public class MainActivity extends AppCompatActivity
     private void updateFilterAndRefreshList(Filter newFilter) {
         filter = newFilter;
         refreshTodoList();
+    }
+
+    private void shortcutManager() {
+        if (Build.VERSION.SDK_INT >= 25) {
+            ShortcutManager sm = getSystemService(ShortcutManager.class);
+            Intent sIntent = new Intent(this,CreateTodoMenuActivity.class);
+            sIntent.setAction(Intent.ACTION_VIEW);
+
+            ShortcutInfo sInfro = new ShortcutInfo.Builder(this,"add")
+                    .setShortLabel("Add Task")
+                    .setLongLabel("Create a new Task")
+                    .setIcon(Icon.createWithResource(this,R.drawable.ic_add))
+                    .setIntent(sIntent).build();
+
+            sm.setDynamicShortcuts(Arrays.asList(sInfro));
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
