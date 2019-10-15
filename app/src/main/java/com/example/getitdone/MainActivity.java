@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity
                     List<Todo> todos = helpers.getTodoList(Filter.All, MainActivity.this);
                     List<Todo> dateTodo = new ArrayList<>();
                     for (Todo todo : todos){
-                        if (todo.getDueDate().equals(dateSelected)){
+                        if (todo.getDueDate() != null && todo.getDueDate().equals(dateSelected)){
                             dateTodo.add(todo);
                         }
                     }
