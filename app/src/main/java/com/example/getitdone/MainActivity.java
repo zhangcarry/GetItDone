@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("Time", todo.getDueTime().toString());
             intent.putExtra("priority", todo.getPriority());
             intent.putExtra("pos", pos);
-            helpers.deleteTodo(todo, getApplicationContext());  // so that there will not be duplicate
             startActivityForResult(intent, edit_REQUEST);
         }
 
