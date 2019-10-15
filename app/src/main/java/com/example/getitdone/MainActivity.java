@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.provider.ContactsContract;
 import android.view.ContextMenu;
 import android.view.View;
 
@@ -149,10 +150,18 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView lv = (ListView) parent;
                 if (lv.isItemChecked(position)){
-                    lv.setItemChecked(position, false);
+                    lv.setItemChecked(position, true);
                     // update the data file
                     Todo completedTodo = (Todo) lv.getItemAtPosition(position);
                     helpers.setTodoAsCompleted(completedTodo, getApplicationContext());
+                    // update the list view
+                    refreshTodoList();
+                }
+                if (!lv.isItemChecked(position)){
+                    lv.setItemChecked(position, false);
+                    // update the data file
+                    Todo uncompletedTodo = (Todo) lv.getItemAtPosition(position);
+                    helpers.setTodoAsunCompleted(uncompletedTodo, getApplicationContext());
                     // update the list view
                     refreshTodoList();
                 }
@@ -225,7 +234,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         } else if (id == R.id.nav_forecast) {
-
             final Calendar myCalendar = Calendar.getInstance();
 
             final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -253,22 +261,12 @@ public class MainActivity extends AppCompatActivity
                     tdListAdapter.notifyDataSetChanged();
                 }
 
-                };
+            };
 
-            DatePickerDialog datePicker = new DatePickerDialog(MainActivity.this, date, myCalendar
+            new DatePickerDialog(MainActivity.this, date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH));
-            datePicker.show();
-            datePicker.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    // Go back to inbox if no date is selected
-                    updateFilterAndRefreshList(Filter.Uncompleted);
-                    NavigationView navigationView = findViewById(R.id.nav_view);
-                    navigationView.getMenu().getItem(0).setChecked(true);
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
-                }
-            });
         }
 
 

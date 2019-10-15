@@ -121,4 +121,12 @@ public class HelperMethods {
         }
         Serialize.saveTodos(todos, context);
     }
+
+    public void setTodoAsunCompleted(Todo todo, Context context) {
+        List<Todo> todos = Serialize.loadTodos(context);
+        if (todos.contains(todo)) {
+            todos.get(todos.indexOf(todo)).setunComplete();
+        }
+        Serialize.saveTodos(todos, context);
+    }
 }

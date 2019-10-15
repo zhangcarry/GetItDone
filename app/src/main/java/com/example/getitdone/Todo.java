@@ -66,6 +66,7 @@ public class Todo implements Serializable {
     }
 
     public void setComplete() { this.completed = true; }
+    public void setunComplete() { this.completed = false; }
 
     public void setName(String newName) {
         this.todoName = newName;
