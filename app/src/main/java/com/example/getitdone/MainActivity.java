@@ -1,8 +1,11 @@
 package com.example.getitdone;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -12,6 +15,8 @@ import android.view.ContextMenu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -41,6 +46,8 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static final String CHANNEL_ID = "channel";
 
     static final int CREATE_TODO_REQUEST = 1;
     static final int edit_REQUEST = 0;
@@ -101,6 +108,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        createNotificationChannel();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -123,7 +132,6 @@ public class MainActivity extends AppCompatActivity
 
         // list to-dos
         initTodoListView();
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -181,6 +189,29 @@ public class MainActivity extends AppCompatActivity
         tdListAdapter.notifyDataSetChanged();
     }
 
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Reminder", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Reminder");
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+    }
+
+    private void sendNotification() {
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        Notification notification = new NotificationCompat.Builder(this,CHANNEL_ID)
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setSmallIcon(R.drawable.ic_check_box)
+                .setContentTitle("Reminder")
+                .setContentText("Test message")
+                .build();
+
+        notificationManagerCompat.notify(1,notification);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -207,7 +238,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            sendNotification();
         }
 
         return super.onOptionsItemSelected(item);
