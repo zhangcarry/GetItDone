@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity
         Notification notification = new NotificationCompat.Builder(this,CHANNEL_ID)
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSmallIcon(R.drawable.ic_check)
+                .setSmallIcon(R.drawable.ic_bell_check)
                 .setAutoCancel(true)
                 .addAction(R.drawable.ic_check,"Complete",actionIntent)
                 .setContentTitle("Reminder")
