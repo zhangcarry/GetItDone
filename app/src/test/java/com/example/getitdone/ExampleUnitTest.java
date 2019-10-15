@@ -2,6 +2,9 @@ package com.example.getitdone;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -15,3 +18,4 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
 }
+

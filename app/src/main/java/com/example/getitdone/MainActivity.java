@@ -160,23 +160,16 @@ public class MainActivity extends AppCompatActivity
         tdListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, todos);
         tdListView.setAdapter(tdListAdapter);
 
+        //check box
         AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView lv = (ListView) parent;
                 if (lv.isItemChecked(position)){
-                    lv.setItemChecked(position, true);
-                    // update the data file
-                    Todo completedTodo = (Todo) lv.getItemAtPosition(position);
-                    helpers.setTodoAsCompleted(completedTodo, getApplicationContext());
-                    // update the list view
-                    refreshTodoList();
-                }
-                if (!lv.isItemChecked(position)){
                     lv.setItemChecked(position, false);
                     // update the data file
-                    Todo uncompletedTodo = (Todo) lv.getItemAtPosition(position);
-                    helpers.setTodoAsunCompleted(uncompletedTodo, getApplicationContext());
+                    Todo todo = (Todo) lv.getItemAtPosition(position);
+                    helpers.setTodoToOpposite(todo, getApplicationContext());
                     // update the list view
                     refreshTodoList();
                 }

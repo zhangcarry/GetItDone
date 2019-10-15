@@ -127,13 +127,17 @@ public class HelperMethods {
         Serialize.saveTodos(todos, context);
     }
 
-    public void setTodoAsunCompleted(Todo todo, Context context) {
+    public void setTodoToOpposite(Todo todo, Context context) {
         List<Todo> todos = Serialize.loadTodos(context);
         if (todos.contains(todo)) {
-            todos.get(todos.indexOf(todo)).setunComplete();
+            if (!todo.isCompleted()) {
+                todos.get(todos.indexOf(todo)).setComplete();
+            }
+            if (todo.isCompleted()) {
+                todos.get(todos.indexOf(todo)).setunComplete();
+            }
+            Serialize.saveTodos(todos, context);
         }
-        Serialize.saveTodos(todos, context);
+
     }
-
-
 }
