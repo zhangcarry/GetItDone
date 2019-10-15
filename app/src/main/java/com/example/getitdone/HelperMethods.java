@@ -106,6 +106,12 @@ public class HelperMethods {
         Serialize.saveTodos(todos, context);
     }
 
+    public void editTodo(Todo edit, int pos, Context context){
+        List<Todo> todos = Serialize.loadTodos(context);
+        todos.set(pos, edit);
+        Serialize.saveTodos(todos, context);
+    }
+
     /**
      * Delete a to-do from the data file.
      * @param todo
@@ -127,6 +133,11 @@ public class HelperMethods {
         Serialize.saveTodos(todos, context);
     }
 
+    /**
+     * change complete status to opposite
+     * @param todo
+     * @param context
+     */
     public void setTodoToOpposite(Todo todo, Context context) {
         List<Todo> todos = Serialize.loadTodos(context);
         if (todos.contains(todo)) {

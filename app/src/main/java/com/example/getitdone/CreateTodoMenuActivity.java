@@ -126,6 +126,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     String tt = edittime.getText().toString();
                     td.setDueDate(dd);
                     td.setDueTime(tt);
+                    td.setCalendar(myCalendar);
                     List<Todo> todos = Serialize.loadTodos(getApplicationContext());
                     todos.add(td);
                     Serialize.saveTodos(todos, getApplicationContext());

@@ -1,6 +1,7 @@
 package com.example.getitdone;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -19,13 +20,15 @@ public class Todo implements Serializable {
     private String dueDate;
     private String dueTime;
     private int priority;  // 1 - highest priority, 5 - lowest priority
+    private Calendar calendar;
     private boolean completed = false;
 
-    public Todo(String todoName, String dueDate, String dueTime, int priority) {
+    public Todo(String todoName, String dueDate, String dueTime, int priority, Calendar calendar) {
         this.todoName = todoName;
         this.dueDate = dueDate;
         this.dueTime = dueTime;
         this.priority = priority;
+        this.calendar = calendar;
     }
 
     /**
@@ -64,6 +67,7 @@ public class Todo implements Serializable {
     public String getDueTime() {
         return this.dueTime;
     }
+    public Calendar getCalendar(){return this.calendar;}
 
     public void setComplete() { this.completed = true; }
     public void setunComplete() { this.completed = false; }
@@ -83,6 +87,8 @@ public class Todo implements Serializable {
     public void setPriority(int newPriority) {
         this.priority = newPriority;
     }
+
+    public void setCalendar(Calendar calendar) {this.calendar = calendar;};
 
     @Override
     public boolean equals(Object obj) {

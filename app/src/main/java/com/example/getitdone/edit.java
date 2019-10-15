@@ -146,7 +146,7 @@ public class edit extends AppCompatActivity {
                     String tt = edittime.getText().toString();
                     td.setDueDate(dd);
                     td.setDueTime(tt);
-                    helpers.addNewTodo(td, getApplicationContext());
+                    helpers.editTodo(td, pos, getApplicationContext());
                     finish();
                 }
             }
