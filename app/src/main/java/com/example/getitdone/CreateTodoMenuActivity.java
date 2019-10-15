@@ -24,6 +24,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+/**
+ * adding new todos
+ * @author Zijing Que (u6469732)
+ * @author Chan Tun Aung (u6777573)
+ * @author Carry Zhang (u6499267)
+ */
 
 
 public class CreateTodoMenuActivity extends AppCompatActivity {

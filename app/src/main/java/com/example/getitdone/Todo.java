@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Class that represents a single to-do.
  * @author Chan Tun Aung (u6777573)
- * @author future author, put your name here
+ * @author Zijing Que (u6469732)
  */
 public class Todo implements Serializable {
 
