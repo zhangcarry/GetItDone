@@ -123,6 +123,8 @@ public class MainActivity extends AppCompatActivity
 
         createNotificationChannel();
 
+        MainActivity.this.setTitle("Inbox");
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -206,7 +208,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void sendNotification() {
+    private void sendNotification(String title) {
         Intent notificationIntent = new Intent(this,MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
         Intent broadcastIntent = new Intent(this, NotificationListener.class);
@@ -219,10 +221,10 @@ public class MainActivity extends AppCompatActivity
                 .setSmallIcon(R.drawable.ic_bell_check)
                 .setAutoCancel(true)
                 .addAction(R.drawable.ic_check,"Complete",actionIntent)
-                .setContentTitle("Reminder")
-                .setContentText("Test message")
+                .setContentTitle(title)
+                .setContentText(title + " is due today")
                 .setContentIntent(contentIntent)
-                .setColor(Color.rgb(103,58,183))
+                .setColor(Color.rgb(37,5,109))
                 .build();
 
         notificationManagerCompat.notify(1,notification);
@@ -254,7 +256,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            sendNotification();
+            sendNotification("Test notification");
         }
 
         return super.onOptionsItemSelected(item);
@@ -289,7 +291,9 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_remaining) {
             updateFilterAndRefreshList(Filter.Uncompleted);
+            MainActivity.this.setTitle("Inbox");
         } else if (id == R.id.nav_completed) {
+            MainActivity.this.setTitle("Completed Tasks");
             updateFilterAndRefreshList(Filter.Completed);
         } else if (id == R.id.nav_priority) {
         } else if (id == R.id.nav_share) {
@@ -311,6 +315,8 @@ public class MainActivity extends AppCompatActivity
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     // The selected date
                     dateSelected = sdf.format(myCalendar.getTime());
+
+                    MainActivity.this.setTitle("Tasks for "+ dateSelected);
 
                     List<Todo> todos = helpers.getTodoList(Filter.All, MainActivity.this);
                     List<Todo> dateTodo = new ArrayList<>();

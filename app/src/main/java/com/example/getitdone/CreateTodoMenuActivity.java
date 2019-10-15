@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -38,6 +39,8 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_todo_menu);
+
+        CreateTodoMenuActivity.this.setTitle("Create New Task");
 
         final EditText editName = findViewById(R.id.editName);
         final Calendar myCalendar = Calendar.getInstance();
