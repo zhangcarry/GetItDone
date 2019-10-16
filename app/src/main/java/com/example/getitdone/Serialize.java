@@ -20,6 +20,11 @@ import java.util.List;
  */
 public class Serialize {
 
+    /**
+     * Saving the to-do list to the data file.
+     * @param todos list of to-dos
+     * @param appContext
+     */
     public static void saveTodos(List<Todo> todos, Context appContext) {
         HelperMethods helpers = new HelperMethods();
         File dataFile = helpers.getDataFile(appContext);
@@ -38,6 +43,11 @@ public class Serialize {
         }
     }
 
+    /**
+     * Loading the to-do list from the data file.
+     * @param appContext
+     * @return list of to-dos
+     */
     public static List<Todo> loadTodos(Context appContext) {
         HelperMethods helpers = new HelperMethods();
         File dataFile = helpers.getDataFile(appContext);
