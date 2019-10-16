@@ -41,7 +41,7 @@ public class edit extends AppCompatActivity {
         // helper methods
         final HelperMethods helpers = new HelperMethods();
 
-        //variable
+        // constants
         final EditText editName = findViewById(R.id.editName);
         final Calendar myCalendar = Calendar.getInstance();
         final EditText edittext = findViewById(R.id.editDate);
@@ -71,19 +71,18 @@ public class edit extends AppCompatActivity {
         oldname = intent.getStringExtra("name");
         olddate = intent.getStringExtra("Date");
         oldtime = intent.getStringExtra("Time");
-        oldpriority = intent.getStringExtra("priority");
         pos = intent.getIntExtra("pos", 0);
 
         editName.setText(oldname);
         edittext.setText(olddate);
         edittime.setText(oldtime);
 
+        // date picker
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -91,7 +90,6 @@ public class edit extends AppCompatActivity {
             }
 
         };
-
         edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +98,7 @@ public class edit extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
+        // time picker
         final TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -109,7 +107,6 @@ public class edit extends AppCompatActivity {
                 edittime.setText(timeFormat.format(myCalendar.getTime()));
             }
         };
-
         edittime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +114,7 @@ public class edit extends AppCompatActivity {
             }
         });
 
+        // button for saving the edited to-do
         final FloatingActionButton add = findViewById(R.id.addButton);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,11 +123,13 @@ public class edit extends AppCompatActivity {
                 String name = editName.getText().toString();
                 String date = edittext.getText().toString();
                 String time = edittime.getText().toString();
+                // name can't be empty
                 if (name.equals("")) {
                     editName.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
                     Snackbar snackbar = Snackbar.make(view,"Name required",Snackbar.LENGTH_SHORT);
                     snackbar.show();
                 }
+                // date and time can't be empty
                 else if (date.equals("") || (time.equals(""))){
                     edittext.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
                     Snackbar snackbar = Snackbar.make(view,"Date required",Snackbar.LENGTH_SHORT);
@@ -137,7 +137,6 @@ public class edit extends AppCompatActivity {
 
                 }
                 else {
-
                     // Save to the data file
                     Todo td = new Todo();
                     td.setName(editName.getText().toString());
