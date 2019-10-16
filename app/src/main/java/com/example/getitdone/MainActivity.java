@@ -1,5 +1,4 @@
 package com.example.getitdone;
-
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -12,37 +11,25 @@ import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import android.provider.ContactsContract;
 import android.view.ContextMenu;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.view.MenuItem;
-
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.OnLifecycleEvent;
-
 import android.view.Menu;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ListView;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,17 +47,17 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String CHANNEL_ID = "channel";
-
+    // constants
+    public static final String CHANNEL_ID = "channel";  // channel for notification
+    // request number for identifying activity that has just finish
     static final int CREATE_TODO_REQUEST = 1;
     static final int edit_REQUEST = 0;
+
     // data and time formats
     final String dateStr = "dd/MM/yy";
     final String timeStr = "h:mm a";
-    final SimpleDateFormat dateFormat = new SimpleDateFormat(dateStr, Locale.UK);
-    final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
-    final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
-    String dateSelected;
+
+    String dateSelected; // for the data picker
 
     // tells getTodoList function what filter to use
     private Filter filter = Filter.Uncompleted;
@@ -78,12 +65,13 @@ public class MainActivity extends AppCompatActivity
     // Use this to call helper methods
     HelperMethods helpers = new HelperMethods();
 
+    // initialization to display todos
     List<Todo> todos = null;
     ListView tdListView;
     private ArrayAdapter tdListAdapter;
     int pos = 1;
 
-    // context menu
+    // context menu for deleting and editing
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -92,7 +80,6 @@ public class MainActivity extends AppCompatActivity
         pos = ((AdapterView.AdapterContextMenuInfo)menuInfo).position;
 
     }
-
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.delete) {
@@ -114,54 +101,10 @@ public class MainActivity extends AppCompatActivity
         return super.onContextItemSelected(item);
     }
 
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        createNotificationChannel();
-
-        MainActivity.this.setTitle("Inbox");
-
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            /**
-             * This method is called when the floating point button with id 'fab' is clicked.
-             * The method will start a new activity that shows the menu (i.e. CreateTodoMenuActivity) so
-             * that the user can create a to-do.
-             * @param view
-             * @author Chan Tun Aung (u6777573)
-             * @date 6-October-2019
-             */
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, CreateTodoMenuActivity.class);
-                startActivityForResult(intent, CREATE_TODO_REQUEST);
-            }
-        });
-
-        // list to-dos
-        initTodoListView();
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Select the first item as default
-        navigationView.getMenu().getItem(0).setChecked(true);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
-
-        registerForContextMenu(tdListView);
-
-        shortcutManager();
-    }
-
+    /**
+     * Initialize the to-do list view.
+     *
+     */
     private void initTodoListView() {
         todos = helpers.getTodoList(filter, this);
         tdListView = findViewById(R.id.todo);
@@ -169,7 +112,7 @@ public class MainActivity extends AppCompatActivity
         tdListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, todos);
         tdListView.setAdapter(tdListAdapter);
 
-        //check box
+        // checkbox listener
         AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -198,6 +141,10 @@ public class MainActivity extends AppCompatActivity
         tdListAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Create notification channel.
+     * reference - https://developer.android.com/guide/topics/ui/notifiers/notifications
+     */
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Reminder", NotificationManager.IMPORTANCE_HIGH);
@@ -207,6 +154,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * For sending notification.
+     * @param title notification title
+     */
     private void sendNotification(String title) {
         Intent notificationIntent = new Intent(this,MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
@@ -261,11 +212,18 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * For updating and refreshing the to-do list view.
+     * @param newFilter new filter to use for displaying the to-dos
+     */
     private void updateFilterAndRefreshList(Filter newFilter) {
         filter = newFilter;
         refreshTodoList();
     }
 
+    /**
+     * Shortcut manager
+     */
     private void shortcutManager() {
         if (Build.VERSION.SDK_INT >= 25) {
             ShortcutManager sm = getSystemService(ShortcutManager.class);
@@ -282,26 +240,31 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * For the navigation bar.
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        // for the inbox activity
         if (id == R.id.nav_remaining) {
             updateFilterAndRefreshList(Filter.Uncompleted);
             MainActivity.this.setTitle("Inbox");
-        } else if (id == R.id.nav_completed) {
+        }
+        // activity to display completed to-dos
+        else if (id == R.id.nav_completed) {
             MainActivity.this.setTitle("Completed Tasks");
             updateFilterAndRefreshList(Filter.Completed);
-        } else if (id == R.id.nav_priority) {
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        } else if (id == R.id.nav_forecast) {
+        }
+        // activity for date selection
+        else if (id == R.id.nav_forecast) {
             final Calendar myCalendar = Calendar.getInstance();
-
+            // setting up date picker
             final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
                 @Override
@@ -337,12 +300,17 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    /**
+     * After coming back from other activities.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -354,5 +322,51 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // initialization for notification channel
+        createNotificationChannel();
+
+        MainActivity.this.setTitle("Inbox");
+
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        // button to add new to-do
+        fab.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method is called when the floating point button with id 'fab' is clicked.
+             * The method will start a new activity that shows the menu (i.e. CreateTodoMenuActivity) so
+             * that the user can create a to-do.
+             * @param view
+             * @author Chan Tun Aung (u6777573)
+             * @date 6-October-2019
+             */
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, CreateTodoMenuActivity.class);
+                startActivityForResult(intent, CREATE_TODO_REQUEST);
+            }
+        });
+
+        // list to-dos in the list view
+        initTodoListView();
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);  // navigation bar
+        // Select the first item as default
+        navigationView.getMenu().getItem(0).setChecked(true);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+
+        registerForContextMenu(tdListView);
+        // initialize the support for shortcut feature
+        shortcutManager();
+    }
 
 }
