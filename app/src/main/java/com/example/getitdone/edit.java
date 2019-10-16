@@ -46,7 +46,6 @@ public class edit extends AppCompatActivity {
         final Calendar myCalendar = Calendar.getInstance();
         final EditText edittext = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);
-        final Spinner priority = findViewById(R.id.spinner);
         View inflatedView = getLayoutInflater().inflate(R.layout.activity_main, null);
         final ListView todo = inflatedView.findViewById(R.id.todo);
         final ArrayList al = new ArrayList<String>();
@@ -54,7 +53,6 @@ public class edit extends AppCompatActivity {
         final String oldname;
         final String olddate;
         final String oldtime;
-        final String oldpriority;
         final int pos;
         ad = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, al);
         todo.setAdapter(ad);
@@ -140,7 +138,6 @@ public class edit extends AppCompatActivity {
                     // Save to the data file
                     Todo td = new Todo();
                     td.setName(editName.getText().toString());
-                    td.setPriority(getPriorityLevel(priority.getSelectedItem().toString()));
                     String dd = edittext.getText().toString();
                     String tt = edittime.getText().toString();
                     td.setDueDate(dd);
@@ -151,23 +148,5 @@ public class edit extends AppCompatActivity {
             }
         });
 
-        // Dropdown menu for selecting priority
-        Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.task_priorities, android.R.layout.simple_spinner_item);
-        spinner.setAdapter(adapter);
-    }
-
-    /**
-     * Retrieve the priority level from the chosen priority by the user.
-     * @author Chan Tun Aung (u6777573)
-     */
-    private int getPriorityLevel(String choice) {
-        // user did not select any priority
-        if (choice.equals(getResources().getStringArray(R.array.task_priorities)[0])) {
-            return 0;
-        } else {
-            return Integer.parseInt( choice.split(" ")[1]);
-        }
     }
 }

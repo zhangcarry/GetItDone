@@ -19,7 +19,6 @@ public class Todo implements Serializable {
     private String todoName;
     private String dueDate;
     private String dueTime;
-    private int priority;  // 1 - highest priority, 5 - lowest priority
 
     private boolean completed = false;
 
@@ -27,7 +26,6 @@ public class Todo implements Serializable {
         this.todoName = todoName;
         this.dueDate = dueDate;
         this.dueTime = dueTime;
-        this.priority = priority;
 
     }
 
@@ -40,7 +38,6 @@ public class Todo implements Serializable {
         this.todoName = todoName;
         this.dueDate = null;  // no due-date
         this.dueTime = null;
-        this.priority = 5;
     }
 
     public Todo() {}
@@ -51,9 +48,6 @@ public class Todo implements Serializable {
         return this.todoName;
     }
 
-    public int getPriority() {
-        return this.priority;
-    }
 
     /**
      * Returns the due date.
@@ -84,10 +78,6 @@ public class Todo implements Serializable {
         this.dueTime = newTime;
     }
 
-    public void setPriority(int newPriority) {
-        this.priority = newPriority;
-    }
-
 
 
     @Override
@@ -97,7 +87,6 @@ public class Todo implements Serializable {
         return this.todoName.equals(otherTodo.todoName) &&
                 this.dueDate.equals(otherTodo.dueDate) &&
                 this.dueTime.equals(otherTodo.dueTime) &&
-                this.priority == otherTodo.priority &&
                 this.isCompleted() == otherTodo.isCompleted();
     }
 
@@ -107,7 +96,6 @@ public class Todo implements Serializable {
         hashStr.append(this.todoName);
         hashStr.append(this.dueDate);
         hashStr.append(this.dueTime);
-        hashStr.append(this.priority);
         hashStr.append(this.completed);
         return hashStr.hashCode();
     }

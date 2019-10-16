@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("name", todo.getName());
             intent.putExtra("Date", todo.getDueDate().toString());
             intent.putExtra("Time", todo.getDueTime().toString());
-            intent.putExtra("priority", todo.getPriority());
             intent.putExtra("pos", pos);
             startActivityForResult(intent, edit_REQUEST);
         }
