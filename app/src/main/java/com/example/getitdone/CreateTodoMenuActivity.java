@@ -42,6 +42,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
 
         CreateTodoMenuActivity.this.setTitle("Create New Task");
 
+        // constants
         final EditText editName = findViewById(R.id.editName);
         final Calendar myCalendar = Calendar.getInstance();
         final EditText editdate = findViewById(R.id.editDate);
@@ -59,14 +60,12 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         final String timeStr = "h:mm a";
         final SimpleDateFormat dateFormat = new SimpleDateFormat(dateStr, Locale.UK);
         final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
-        final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
-
+        // date picker when creating a to-do
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -74,7 +73,6 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
             }
 
         };
-
         editdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +81,8 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
+        // time picker when creating a new to-do
+        // reference - https://developer.android.com/reference/android/widget/TimePicker
         final TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -92,7 +91,6 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                 edittime.setText(timeFormat.format(myCalendar.getTime()));
             }
         };
-
         edittime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +98,8 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
             }
         });
 
+        // button for saving the new to-do
+        // reference - https://developer.android.com/guide/topics/ui/floating-action-button
         final FloatingActionButton add = findViewById(R.id.addButton);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,19 +108,20 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                 String name = editName.getText().toString();
                 String date = editdate.getText().toString();
                 String time = edittime.getText().toString();
+                // name can't be empty
                 if (name.equals("")) {
                     editName.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
                     Snackbar snackbar = Snackbar.make(view,"Name required",Snackbar.LENGTH_SHORT);
                     snackbar.show();
                 }
+                // date and time can't be empty
                 else if (date.equals("") || (time.equals(""))){
                     editdate.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
                     Snackbar snackbar = Snackbar.make(view,"Date required",Snackbar.LENGTH_SHORT);
                     snackbar.show();
-
                 }
+                // if everything necessary is provided
                 else {
-
                     // Save to the data file
                     Todo td = new Todo();
                     td.setName(editName.getText().toString());
@@ -129,11 +130,10 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     String tt = edittime.getText().toString();
                     td.setDueDate(dd);
                     td.setDueTime(tt);
-
                     List<Todo> todos = Serialize.loadTodos(getApplicationContext());
                     todos.add(td);
                     Serialize.saveTodos(todos, getApplicationContext());
-
+                    // return to the main activity
                     finish();
                 }
             }
