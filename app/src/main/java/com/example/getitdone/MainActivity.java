@@ -1,12 +1,10 @@
 package com.example.getitdone;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
@@ -17,7 +15,6 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import android.provider.ContactsContract;
 import android.view.ContextMenu;
 import android.view.View;
 
@@ -35,8 +32,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.OnLifecycleEvent;
 
 import android.view.Menu;
 import android.widget.AbsListView;
@@ -44,7 +39,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ListView;
-import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,12 +61,6 @@ public class MainActivity extends AppCompatActivity
 
     static final int CREATE_TODO_REQUEST = 1;
     static final int edit_REQUEST = 0;
-    // data and time formats
-    final String dateStr = "dd/MM/yy";
-    final String timeStr = "h:mm a";
-    final SimpleDateFormat dateFormat = new SimpleDateFormat(dateStr, Locale.UK);
-    final SimpleDateFormat timeFormat = new SimpleDateFormat(timeStr, Locale.UK);
-    final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat(dateStr+timeStr, Locale.UK);
     String dateSelected;
 
     // tells getTodoList function what filter to use
@@ -267,7 +255,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear,
                                       int dayOfMonth) {
-                    String myFormat = "dd/MM/yy"; //In which you need put here
+                    String myFormat = "d MMM, yyyy";
                     SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
                     myCalendar.set(Calendar.YEAR, year);
                     myCalendar.set(Calendar.MONTH, monthOfYear);
@@ -275,7 +263,7 @@ public class MainActivity extends AppCompatActivity
                     // The selected date
                     dateSelected = sdf.format(myCalendar.getTime());
 
-                    MainActivity.this.setTitle("Tasks for "+ dateSelected);
+                    MainActivity.this.setTitle("Forecast for "+ dateSelected);
 
                     List<Todo> todos = helpers.getTodoList(Filter.All, MainActivity.this);
                     List<Todo> dateTodo = new ArrayList<>();
@@ -291,10 +279,11 @@ public class MainActivity extends AppCompatActivity
 
             };
 
-            new DatePickerDialog(MainActivity.this, date, myCalendar
+            DatePickerDialog dialog = new DatePickerDialog(MainActivity.this, date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                    myCalendar.get(Calendar.DAY_OF_MONTH));
 
+            dialog.show();
         }
 
 
