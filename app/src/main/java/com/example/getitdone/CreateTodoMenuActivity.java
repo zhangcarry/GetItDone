@@ -113,12 +113,6 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     Snackbar snackbar = Snackbar.make(view, "Name required", Snackbar.LENGTH_SHORT);
                     snackbar.show();
                 }
-                // date and time can't be empty
-                else if (date.equals("") || (time.equals(""))) {
-                    editdate.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
-                    Snackbar snackbar = Snackbar.make(view, "Date required", Snackbar.LENGTH_SHORT);
-                    snackbar.show();
-                }
                 // if everything necessary is provided
                 else {
                     // Save to the data file

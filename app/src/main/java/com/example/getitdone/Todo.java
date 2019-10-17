@@ -85,8 +85,8 @@ public class Todo implements Serializable {
         if (obj == null) return false;
         Todo otherTodo = (Todo) obj;
         return this.todoName.equals(otherTodo.todoName) &&
-                this.dueDate.equals(otherTodo.dueDate) &&
-                this.dueTime.equals(otherTodo.dueTime) &&
+                (this.dueDate.equals(otherTodo.dueDate)) || (this.dueDate == null && otherTodo.dueDate == null) &&
+                (this.dueTime.equals(otherTodo.dueTime)) || (this.dueTime == null && otherTodo.dueTime == null) &&
                 this.isCompleted() == otherTodo.isCompleted();
     }
 
