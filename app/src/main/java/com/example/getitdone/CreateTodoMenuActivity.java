@@ -103,12 +103,9 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // If nothing entered, display prompt
                 String name = editName.getText().toString();
-                String date = editdate.getText().toString();
-                String time = edittime.getText().toString();
-                // name can't be empty
-                if (name.equals("")) {
+                // If nothing or only spaces entered, display prompt
+                if (name.equals("") || name.replaceAll(" ","").equals("")) {
                     editName.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
                     Snackbar snackbar = Snackbar.make(view, "Title can not be empty", Snackbar.LENGTH_SHORT);
                     snackbar.show();

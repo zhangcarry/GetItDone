@@ -48,7 +48,7 @@ public class edit extends AppCompatActivity {
         // constants
         final EditText editName = findViewById(R.id.editName);
         final Calendar myCalendar = Calendar.getInstance();
-        final EditText edittext = findViewById(R.id.editDate);
+        final EditText editDate = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);
         View inflatedView = getLayoutInflater().inflate(R.layout.activity_main, null);
         final ListView todo = inflatedView.findViewById(R.id.todo);
@@ -76,7 +76,7 @@ public class edit extends AppCompatActivity {
         pos = intent.getIntExtra("pos", 0);
 
         editName.setText(oldname);
-        edittext.setText(olddate);
+        editDate.setText(olddate);
         edittime.setText(oldtime);
 
         // date picker
@@ -88,11 +88,11 @@ public class edit extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                edittext.setText(dateFormat.format(myCalendar.getTime()));
+                editDate.setText(dateFormat.format(myCalendar.getTime()));
             }
 
         };
-        edittext.setOnClickListener(new View.OnClickListener() {
+        editDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(edit.this, date, myCalendar
@@ -121,12 +121,9 @@ public class edit extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // If nothing entered, display prompt
                 String name = editName.getText().toString();
-                String date = edittext.getText().toString();
-                String time = edittime.getText().toString();
-                // name can't be empty
-                if (name.equals("")) {
+                // If nothing or only spaces entered, display prompt
+                if (name.equals("") || name.replaceAll(" ","").equals("")){
                     editName.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
                     Snackbar snackbar = Snackbar.make(view,"Title can not be empty",Snackbar.LENGTH_SHORT);
                     snackbar.show();
@@ -135,7 +132,7 @@ public class edit extends AppCompatActivity {
                     // Save to the data file
                     Todo td = new Todo();
                     td.setName(editName.getText().toString());
-                    String dd = edittext.getText().toString();
+                    String dd = editDate.getText().toString();
                     String tt = edittime.getText().toString();
                     td.setDueDate(dd);
                     td.setDueTime(tt);
