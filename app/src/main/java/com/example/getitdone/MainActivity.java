@@ -361,6 +361,7 @@ public class MainActivity extends AppCompatActivity
         // list to-dos
         initTodoListView();
 
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Select the first item as default
