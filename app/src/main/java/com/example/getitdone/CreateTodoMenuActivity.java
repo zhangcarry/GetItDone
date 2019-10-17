@@ -43,7 +43,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         CreateTodoMenuActivity.this.setTitle("Create New Task");
 
         // constants
-        final EditText editName = findViewById(R.id.editName);
+        final EditText editName = findViewById(R.id.editTitle);
         final Calendar myCalendar = Calendar.getInstance();
         final EditText editdate = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);

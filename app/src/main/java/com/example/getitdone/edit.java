@@ -1,6 +1,8 @@
 package com.example.getitdone;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -37,6 +39,8 @@ public class edit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+
+        edit.this.setTitle("Edit Task Details");
 
         // helper methods
         final HelperMethods helpers = new HelperMethods();

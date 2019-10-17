@@ -258,8 +258,6 @@ public class MainActivity extends AppCompatActivity
             MainActivity.this.setTitle("Completed Tasks");
             updateFilterAndRefreshList(Filter.Completed);
         } else if (id == R.id.nav_priority) {
-        } else if (id == R.id.nav_share) {
-
         } else if (id == R.id.nav_send) {
 
         } else if (id == R.id.nav_forecast) {
