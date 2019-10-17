@@ -1,10 +1,12 @@
 package com.example.getitdone;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
@@ -19,6 +21,8 @@ import android.view.ContextMenu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
@@ -87,10 +91,31 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.delete) {
-            List list = helpers.getTodoList(filter, this);
-            Todo toRemove = (Todo) tdListView.getItemAtPosition(pos);
-            helpers.deleteTodo(toRemove, getApplicationContext());
-            refreshTodoList();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+            builder.setTitle("Deleting item");
+            builder.setMessage("Would you like to delete this item?\nThis action is not reversible.");
+
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Todo toRemove = (Todo) tdListView.getItemAtPosition(pos);
+                    helpers.deleteTodo(toRemove, getApplicationContext());
+                    refreshTodoList();
+                }
+            });
+
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog diag = builder.create();
+            diag.show();
+
         } else if (item.getItemId() == R.id.edit) {
             Intent intent = new Intent(MainActivity.this, edit.class);
             Todo todo = (Todo) tdListView.getItemAtPosition(pos);
@@ -190,6 +215,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -246,7 +272,8 @@ public class MainActivity extends AppCompatActivity
             MainActivity.this.setTitle("Completed Tasks");
             updateFilterAndRefreshList(Filter.Completed);
         } else if (id == R.id.nav_help) {
-
+            Intent intent = new Intent(this,WelcomeHelp.class);
+            startActivity(intent);
         } else if (id == R.id.nav_forecast) {
             final Calendar myCalendar = Calendar.getInstance();
 
@@ -347,6 +374,18 @@ public class MainActivity extends AppCompatActivity
         registerForContextMenu(tdListView);
 
         shortcutManager();
+
+        // Open help screen when opening the app for the first time
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+
+        if (isFirstRun) {
+            Intent intent = new Intent(MainActivity.this, WelcomeHelp.class);
+            startActivity(intent);
+        }
+
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putBoolean("isFirstRun", false).commit();
     }
 
 
