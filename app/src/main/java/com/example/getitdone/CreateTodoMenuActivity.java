@@ -110,7 +110,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                 // name can't be empty
                 if (name.equals("")) {
                     editName.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
-                    Snackbar snackbar = Snackbar.make(view, "Name required", Snackbar.LENGTH_SHORT);
+                    Snackbar snackbar = Snackbar.make(view, "Title can not be empty", Snackbar.LENGTH_SHORT);
                     snackbar.show();
                 }
                 // if everything necessary is provided
