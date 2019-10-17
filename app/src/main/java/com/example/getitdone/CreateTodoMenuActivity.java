@@ -43,11 +43,10 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         CreateTodoMenuActivity.this.setTitle("Create New Task");
 
         // constants
-        final EditText editName = findViewById(R.id.editName);
+        final EditText editName = findViewById(R.id.editTitle);
         final Calendar myCalendar = Calendar.getInstance();
         final EditText editdate = findViewById(R.id.editDate);
         final EditText edittime = findViewById(R.id.editTime);
-        final Spinner priority = findViewById(R.id.spinner);
         View inflatedView = getLayoutInflater().inflate(R.layout.activity_main, null);
         final ListView todo = inflatedView.findViewById(R.id.todo);
         final ArrayList al = new ArrayList<String>();
@@ -94,7 +93,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         edittime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new TimePickerDialog(CreateTodoMenuActivity.this, time, myCalendar.get(Calendar.HOUR_OF_DAY),myCalendar.get(Calendar.MINUTE),false).show();
+                new TimePickerDialog(CreateTodoMenuActivity.this, time, myCalendar.get(Calendar.HOUR_OF_DAY), myCalendar.get(Calendar.MINUTE), false).show();
             }
         });
 
@@ -111,13 +110,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                 // name can't be empty
                 if (name.equals("")) {
                     editName.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
-                    Snackbar snackbar = Snackbar.make(view,"Name required",Snackbar.LENGTH_SHORT);
-                    snackbar.show();
-                }
-                // date and time can't be empty
-                else if (date.equals("") || (time.equals(""))){
-                    editdate.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
-                    Snackbar snackbar = Snackbar.make(view,"Date required",Snackbar.LENGTH_SHORT);
+                    Snackbar snackbar = Snackbar.make(view, "Name required", Snackbar.LENGTH_SHORT);
                     snackbar.show();
                 }
                 // if everything necessary is provided
@@ -125,7 +118,6 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     // Save to the data file
                     Todo td = new Todo();
                     td.setName(editName.getText().toString());
-                    td.setPriority(getPriorityLevel(priority.getSelectedItem().toString()));
                     String dd = editdate.getText().toString();
                     String tt = edittime.getText().toString();
                     td.setDueDate(dd);
@@ -139,23 +131,5 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
             }
         });
 
-        // Dropdown menu for selecting priority
-        Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.task_priorities, android.R.layout.simple_spinner_item);
-        spinner.setAdapter(adapter);
-    }
-
-    /**
-     * Retrieve the priority level from the chosen priority by the user.
-     * @author Chan Tun Aung (u6777573)
-     */
-    private int getPriorityLevel(String choice) {
-        // user did not select any priority
-        if (choice.equals(getResources().getStringArray(R.array.task_priorities)[0])) {
-            return 0;
-        } else {
-            return Integer.parseInt( choice.split(" ")[1]);
-        }
     }
 }
