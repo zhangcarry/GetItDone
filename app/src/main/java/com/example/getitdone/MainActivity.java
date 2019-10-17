@@ -257,8 +257,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_completed) {
             MainActivity.this.setTitle("Completed Tasks");
             updateFilterAndRefreshList(Filter.Completed);
-        } else if (id == R.id.nav_priority) {
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_help) {
 
         } else if (id == R.id.nav_forecast) {
             final Calendar myCalendar = Calendar.getInstance();

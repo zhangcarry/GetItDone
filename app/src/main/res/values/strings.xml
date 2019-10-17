@@ -12,7 +12,7 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_tools">Tools</string>
     <string name="menu_info">About</string>
-    <string name="menu_send">Send</string>
+    <string name="menu_help">Help</string>
     <string name="edit_task_name">Task name :</string>
     <string name="edit_title">Title</string>
     <string name="edit_date_time">Date/Time :</string>
@@ -26,6 +26,8 @@
     <string name="nav_completed_text">Completed</string>
     <string name="nav_remaining_todo">Inbox</string>
     <string name="nav_forecast">Forecast</string>
+    <string name="nav_others">Others</string>
+
 
     <string name="data_file_directory">data_files</string>
     <string name="title_activity_create_item">CreateItem</string>
