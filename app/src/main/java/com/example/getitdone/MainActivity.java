@@ -80,7 +80,12 @@ public class MainActivity extends AppCompatActivity
     int previous_length = 0;
     List previous_list = new ArrayList();
 
-    // context menu
+    /**
+     *
+     * @param menu
+     * @param v
+     * @param menuInfo
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -90,10 +95,15 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * This methods provides support when the long-press menuitem dialog is displayed
+     * @param item
+     * @return if item is selected
+     */
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.delete) {
-
+            // When Delete is selected, open dialog before proceeding
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
             builder.setTitle("Deleting item");
@@ -110,6 +120,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
+            // If canceled, do nothing and dismiss the dialog
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -121,6 +132,7 @@ public class MainActivity extends AppCompatActivity
             diag.show();
 
         } else if (item.getItemId() == R.id.edit) {
+            // When Edit is selected, jump to Edit activity
             Intent intent = new Intent(MainActivity.this, edit.class);
             Todo todo = (Todo) tdListView.getItemAtPosition(pos);
             intent.putExtra("name", todo.getName());
@@ -130,12 +142,11 @@ public class MainActivity extends AppCompatActivity
             previous_list = Serialize.loadTodos(this);
             startActivityForResult(intent, edit_REQUEST);
         }
-
         return super.onContextItemSelected(item);
     }
 
     /**
-     * initialize listview
+     * Initialise the listview
      */
     private void initTodoListView() {
         todos = helpers.getTodoList(filter, this);
@@ -178,7 +189,7 @@ public class MainActivity extends AppCompatActivity
 
 
     /**
-     * creating notification
+     * Creating notification
      */
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -211,24 +222,19 @@ public class MainActivity extends AppCompatActivity
         notificationManagerCompat.notify(1,notification);
     }
 
-
-
+    /**
+     * This method provides support when the back button is pressed
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        // If the drawer is opened, close the drawer
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            // Else functions as normal back operations
             super.onBackPressed();
         }
-    }
-
-    @SuppressLint("RestrictedApi")
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     @Override
@@ -251,8 +257,11 @@ public class MainActivity extends AppCompatActivity
         refreshTodoList();
     }
 
+    /**
+     * This method provides support for the Shortcut feature
+     */
     private void shortcutManager() {
-        if (Build.VERSION.SDK_INT >= 26) {
+        if (Build.VERSION.SDK_INT >= 25) {
             ShortcutManager sm = getSystemService(ShortcutManager.class);
             Intent sIntent = new Intent(this,CreateTodoMenuActivity.class);
             setResult(CREATE_TODO_REQUEST,sIntent);
@@ -268,9 +277,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * This method handles navigation view and its items
+     * @param item
+     * @return true
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_remaining) {
@@ -283,36 +296,32 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this,WelcomeHelp.class);
             startActivity(intent);
         } else if (id == R.id.nav_about) {
+            // The About dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
             builder.setTitle("About GetItDone");
             builder.setMessage("Co-developed by Zijing Que (u6469732), Chan Tun Aung (u6777573), and Carry Zhang (u6499267) for COMP2100 2019 semester 2 group assignment submission purpose only.");
-
             builder.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                 }
             });
-
             AlertDialog diag = builder.create();
             diag.show();
         } if (id == R.id.nav_clear) {
+            // This option deletes all items, with a confirmation dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
             builder.setTitle("Clear all items");
             builder.setMessage("All your todo items will be deleted. This action is not reversible.\nWould you like to proceed?");
-
             builder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // clear all
+                    // Clear all items
                     List empty = new ArrayList();
                     Serialize.saveTodos(empty,MainActivity.this);
                     refreshTodoList();
                 }
             });
-
             // Cancel the operation
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
@@ -320,18 +329,16 @@ public class MainActivity extends AppCompatActivity
                     dialog.cancel();
                 }
             });
-
             AlertDialog diag = builder.create();
             diag.show();
         } else if (id == R.id.nav_forecast) {
+            // The forecast view displaces items for the selected date, with a DatePicker dialog displayed when the option is selected
             final Calendar myCalendar = Calendar.getInstance();
-
             final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear,
                                       int dayOfMonth) {
-
                     myCalendar.set(Calendar.YEAR, year);
                     myCalendar.set(Calendar.MONTH, monthOfYear);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -343,7 +350,6 @@ public class MainActivity extends AppCompatActivity
                     // Formatted for List Adapter
                     sdf = new SimpleDateFormat("dd/MM/yy", Locale.UK);
                     dateSelected = sdf.format(myCalendar.getTime());
-
                     List<Todo> todos = helpers.getTodoList(Filter.All, MainActivity.this);
                     List<Todo> dateTodo = new ArrayList<>();
                     for (Todo todo : todos){
@@ -357,15 +363,11 @@ public class MainActivity extends AppCompatActivity
                 }
 
             };
-
             DatePickerDialog dialog = new DatePickerDialog(MainActivity.this, date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH));
-
             dialog.show();
         }
-
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -390,6 +392,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * This method is called each time the app is being run
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -408,8 +414,6 @@ public class MainActivity extends AppCompatActivity
              * The method will start a new activity that shows the menu (i.e. CreateTodoMenuActivity) so
              * that the user can create a to-do.
              * @param view
-             * @author Chan Tun Aung (u6777573)
-             * @date 6-October-2019
              */
             @Override
             public void onClick(View view) {
@@ -421,7 +425,6 @@ public class MainActivity extends AppCompatActivity
 
         // list to-dos
         initTodoListView();
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -435,6 +438,7 @@ public class MainActivity extends AppCompatActivity
 
         registerForContextMenu(tdListView);
 
+        // initialise the shortcut manager
         shortcutManager();
 
         // Open help screen when opening the app for the first time

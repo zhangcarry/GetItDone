@@ -128,8 +128,6 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     List<Todo> todos = Serialize.loadTodos(getApplicationContext());
                     todos.add(td);
                     Serialize.saveTodos(todos, getApplicationContext());
-                    Intent data = new Intent();
-                    setResult(CREATE_TODO_REQUEST, data);
                     // return to the main activity
                     finish();
                 }
