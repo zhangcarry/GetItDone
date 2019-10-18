@@ -362,9 +362,9 @@ public class MainActivity extends AppCompatActivity
                 snackbar.show();
             }
         }
-        if (resultCode == edit_REQUEST){
+        else if (resultCode == edit_REQUEST){
             refreshTodoList();
-            if (!Serialize.loadTodos(this).equals(previous_list)) {
+            if (Serialize.loadTodos(this).size() == previous_length && !Serialize.loadTodos(this).equals(previous_list)) {
                 Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "Item edited.", Snackbar.LENGTH_SHORT);
                 snackbar.show();
             }
