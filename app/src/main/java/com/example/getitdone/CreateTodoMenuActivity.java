@@ -48,8 +48,6 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_todo_menu);
 
-        final MainActivity ma = new MainActivity();
-
         CreateTodoMenuActivity.this.setTitle("Create New Task");
 
 

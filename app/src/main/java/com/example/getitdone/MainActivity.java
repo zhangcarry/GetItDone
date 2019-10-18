@@ -366,6 +366,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        myAlarm nh = new myAlarm();
+        nh.createNotificationChannel(this);
 
         MainActivity.this.setTitle("Inbox");
 
