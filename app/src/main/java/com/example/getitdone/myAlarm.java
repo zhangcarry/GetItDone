@@ -50,7 +50,6 @@ public class myAlarm extends BroadcastReceiver {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSmallIcon(R.drawable.ic_bell_check)
                 .setAutoCancel(true)
-                .setOnlyAlertOnce(true)
                 .setContentTitle(title)
                 .setContentText(title + " is due now")
                 .setContentIntent(contentIntent)
