@@ -22,7 +22,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
@@ -152,10 +151,13 @@ public class MainActivity extends AppCompatActivity
                 ListView lv = (ListView) parent;
                 if (lv.isItemChecked(position)){
                     lv.setItemChecked(position, false);
-                    // update the data file
+                    // Update the data file
                     Todo todo = (Todo) lv.getItemAtPosition(position);
                     helpers.setTodoToOpposite(todo, getApplicationContext());
-                    // update the list view
+                    // Show confirmation
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "Task completion status updated.", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                    // Update the list view
                     refreshTodoList();
                 }
             }
@@ -262,11 +264,10 @@ public class MainActivity extends AppCompatActivity
                     .setIcon(Icon.createWithResource(this,R.drawable.ic_add))
                     .setIntent(sIntent).build();
 
-            sm.createShortcutResultIntent(sInfro);
+            sm.setDynamicShortcuts(Arrays.asList(sInfro));
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -281,7 +282,22 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_help) {
             Intent intent = new Intent(this,WelcomeHelp.class);
             startActivity(intent);
-        } else if (id == R.id.nav_clear) {
+        } else if (id == R.id.nav_about) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+            builder.setTitle("About GetItDone");
+            builder.setMessage("Co-developed by Zijing Que (u6469732), Chan Tun Aung (u6777573), and Carry Zhang (u6499267) for COMP2100 2019 semester 2 group assignment submission purpose only.");
+
+            builder.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog diag = builder.create();
+            diag.show();
+        } if (id == R.id.nav_clear) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
             builder.setTitle("Clear all items");
