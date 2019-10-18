@@ -79,7 +79,11 @@ public class Todo implements Serializable {
     }
 
 
-
+    /**
+     * check if two todos are equal
+     * @param obj
+     * @return boolean
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
