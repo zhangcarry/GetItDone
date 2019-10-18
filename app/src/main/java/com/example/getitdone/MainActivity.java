@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     String dateSelected;
 
     // tells getTodoList function what filter to use
-    private Filter filter = Filter.Uncompleted;
+    Filter filter = Filter.Uncompleted;
 
     // Use this to call helper methods
     HelperMethods helpers = new HelperMethods();
@@ -297,6 +297,7 @@ public class MainActivity extends AppCompatActivity
 
             AlertDialog diag = builder.create();
             diag.show();
+            // remove everything
         } if (id == R.id.nav_clear) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
