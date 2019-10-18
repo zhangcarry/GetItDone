@@ -2,8 +2,11 @@ package com.example.getitdone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -128,9 +132,27 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     List<Todo> todos = Serialize.loadTodos(getApplicationContext());
                     todos.add(td);
                     Serialize.saveTodos(todos, getApplicationContext());
+                    Intent data = new Intent();
+                    setResult(CREATE_TODO_REQUEST, data);
+                    setAlarm(myCalendar.getTimeInMillis());
                     // return to the main activity
                     finish();
                 }
+            }
+
+            private void setAlarm(long time) {
+                //getting the alarm manager
+                AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                //creating a new intent specifying the broadcast receiver
+                Intent i = new Intent(CreateTodoMenuActivity.this, myAlarm.class);
+
+                //creating a pending intent using the intent
+                PendingIntent pi = PendingIntent.getBroadcast(CreateTodoMenuActivity.this, 0, i, 0);
+
+                //setting the repeating alarm that will be fired every day
+                am.setExact(AlarmManager.RTC_WAKEUP, time, pi);
+                Toast.makeText(CreateTodoMenuActivity.this, "Alarm is set", Toast.LENGTH_SHORT).show();
             }
         });
 
