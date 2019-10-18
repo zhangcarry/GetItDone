@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static com.example.getitdone.MainActivity.CREATE_TODO_REQUEST;
+
 /**
  * adding new todos
  * @author Zijing Que (u6469732)
@@ -39,6 +43,8 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_todo_menu);
+
+        final MainActivity ma = new MainActivity();
 
         CreateTodoMenuActivity.this.setTitle("Create New Task");
 
@@ -122,6 +128,8 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
                     List<Todo> todos = Serialize.loadTodos(getApplicationContext());
                     todos.add(td);
                     Serialize.saveTodos(todos, getApplicationContext());
+                    Intent data = new Intent();
+                    setResult(CREATE_TODO_REQUEST, data);
                     // return to the main activity
                     finish();
                 }

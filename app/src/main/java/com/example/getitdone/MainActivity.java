@@ -31,6 +31,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -103,6 +104,8 @@ public class MainActivity extends AppCompatActivity
                     Todo toRemove = (Todo) tdListView.getItemAtPosition(pos);
                     helpers.deleteTodo(toRemove, getApplicationContext());
                     refreshTodoList();
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "Item deleted.", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
                 }
             });
 
@@ -161,7 +164,7 @@ public class MainActivity extends AppCompatActivity
      * Refresh the list view.
      * reference - https://stackoverflow.com/questions/2250770/how-to-refresh-android-listview
      */
-    private void refreshTodoList() {
+    public void refreshTodoList() {
         todos = helpers.getTodoList(filter, getApplicationContext());
         tdListAdapter.clear();
         tdListAdapter.addAll(todos);
@@ -244,9 +247,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void shortcutManager() {
-        if (Build.VERSION.SDK_INT >= 25) {
+        if (Build.VERSION.SDK_INT >= 26) {
             ShortcutManager sm = getSystemService(ShortcutManager.class);
             Intent sIntent = new Intent(this,CreateTodoMenuActivity.class);
+            setResult(CREATE_TODO_REQUEST,sIntent);
             sIntent.setAction(Intent.ACTION_VIEW);
 
             ShortcutInfo sInfro = new ShortcutInfo.Builder(this,"add")
@@ -255,7 +259,7 @@ public class MainActivity extends AppCompatActivity
                     .setIcon(Icon.createWithResource(this,R.drawable.ic_add))
                     .setIntent(sIntent).build();
 
-            sm.setDynamicShortcuts(Arrays.asList(sInfro));
+            sm.createShortcutResultIntent(sInfro);
         }
     }
 
@@ -324,6 +328,8 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CREATE_TODO_REQUEST) {
             refreshTodoList();
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "Item created.", Snackbar.LENGTH_SHORT);
+            snackbar.show();
         }
         if (resultCode == edit_REQUEST){
             refreshTodoList();
