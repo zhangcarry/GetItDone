@@ -13,7 +13,7 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_info">About</string>
     <string name="menu_help">Help</string>
-    <string name="menu_clear">Clear all tasks</string>
+    <string name="menu_clear">Clear All Tasks</string>
     <string name="edit_task_name">Task name :</string>
     <string name="edit_title">Title</string>
     <string name="edit_date_time">Date/Time :</string>
