@@ -134,8 +134,10 @@ public class edit extends AppCompatActivity {
                     td.setName(editName.getText().toString());
                     String dd = editDate.getText().toString();
                     String tt = edittime.getText().toString();
-                    td.setDueDate(dd);
-                    td.setDueTime(tt);
+                    if (dd.trim() != "") td.setDueDate(dd);
+                    else td.setDueDate(null);
+                    if (tt.trim() != "") td.setDueTime(tt);
+                    else td.setDueTime(null);
                     helpers.editTodo(td, pos, getApplicationContext());
                     finish();
                 }

@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity
     List<Todo> todos = null;
     ListView tdListView;
     private ArrayAdapter tdListAdapter;
-    int pos = 1;
+    int pos = 0;
     int previous_length = 0;
     List previous_list = new ArrayList();
 
@@ -125,8 +125,8 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, edit.class);
             Todo todo = (Todo) tdListView.getItemAtPosition(pos);
             intent.putExtra("name", todo.getName());
-            intent.putExtra("Date", todo.getDueDate().toString());
-            intent.putExtra("Time", todo.getDueTime().toString());
+            intent.putExtra("Date", todo.getDueDate());
+            intent.putExtra("Time", todo.getDueTime());
             intent.putExtra("pos", pos);
             previous_list = Serialize.loadTodos(this);
             startActivityForResult(intent, edit_REQUEST);
@@ -315,15 +315,18 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear,
                                       int dayOfMonth) {
-                    String myFormat = "d MMM, yyyy";
-                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
+
                     myCalendar.set(Calendar.YEAR, year);
                     myCalendar.set(Calendar.MONTH, monthOfYear);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     // The selected date
-                    dateSelected = sdf.format(myCalendar.getTime());
+                    String myFormat = "d MMM, yyyy";
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
+                    MainActivity.this.setTitle("Forecast for "+ sdf.format(myCalendar.getTime()));
 
-                    MainActivity.this.setTitle("Forecast for "+ dateSelected);
+                    // Formatted for List Adapter
+                    sdf = new SimpleDateFormat("dd/MM/yy", Locale.UK);
+                    dateSelected = sdf.format(myCalendar.getTime());
 
                     List<Todo> todos = helpers.getTodoList(Filter.All, MainActivity.this);
                     List<Todo> dateTodo = new ArrayList<>();

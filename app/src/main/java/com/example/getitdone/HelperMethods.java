@@ -80,9 +80,6 @@ public class HelperMethods {
             FileOutputStream outputStream = context.openFileOutput(dataFile.getName(), Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(outputStream);
             List<Todo> todos = new ArrayList<>();
-            Todo sample_completed = new Todo("sample completed todo");
-            sample_completed.setComplete();
-            todos.add(sample_completed);
             oos.writeObject(todos);
             oos.close();
             outputStream.close();
