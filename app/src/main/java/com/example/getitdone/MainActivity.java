@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     List previous_list = new ArrayList();
 
     /**
-     *
+     * create context menu for editing and deleting
      * @param menu
      * @param v
      * @param menuInfo

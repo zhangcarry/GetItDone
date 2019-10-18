@@ -18,9 +18,14 @@ import androidx.core.app.NotificationManagerCompat;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static com.example.getitdone.MainActivity.CHANNEL_ID;
 
+/**
+ * reminder
+ */
 public class myAlarm extends BroadcastReceiver {
-
-
+    /**
+     * create channel for notification
+     * @param context
+     */
     public void createNotificationChannel(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Reminder", NotificationManager.IMPORTANCE_HIGH);
@@ -30,6 +35,11 @@ public class myAlarm extends BroadcastReceiver {
         }
     }
 
+    /**
+     * send notification
+     * @param context
+     * @param title
+     */
     public void sendNotification(Context context, String title) {
         Intent notificationIntent = new Intent(context,MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context,0,notificationIntent,0);
@@ -49,6 +59,12 @@ public class myAlarm extends BroadcastReceiver {
 
         notificationManagerCompat.notify(1,notification);
     }
+
+    /**
+     * send notification when alarm triggered
+     * @param context
+     * @param intent
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         String name = intent.getStringExtra("name");
