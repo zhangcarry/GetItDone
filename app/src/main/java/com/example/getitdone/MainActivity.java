@@ -189,40 +189,6 @@ public class MainActivity extends AppCompatActivity
 
 
     /**
-     * Creating notification
-     */
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Reminder", NotificationManager.IMPORTANCE_HIGH);
-            channel.setDescription("Reminder");
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
-    }
-
-    private void sendNotification(String title) {
-        Intent notificationIntent = new Intent(this,MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
-        Intent broadcastIntent = new Intent(this, NotificationListener.class);
-        PendingIntent actionIntent = PendingIntent.getBroadcast(this,0,broadcastIntent,PendingIntent.FLAG_CANCEL_CURRENT);
-
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        Notification notification = new NotificationCompat.Builder(this,CHANNEL_ID)
-                .setCategory(NotificationCompat.CATEGORY_REMINDER)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSmallIcon(R.drawable.ic_bell_check)
-                .setAutoCancel(true)
-                .addAction(R.drawable.ic_check,"Complete",actionIntent)
-                .setContentTitle(title)
-                .setContentText(title + " is due today")
-                .setContentIntent(contentIntent)
-                .setColor(Color.rgb(37,5,109))
-                .build();
-
-        notificationManagerCompat.notify(1,notification);
-    }
-
-    /**
      * This method provides support when the back button is pressed
      */
     @Override
@@ -246,7 +212,6 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            sendNotification("Test notification");
         }
 
         return super.onOptionsItemSelected(item);
@@ -401,7 +366,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        createNotificationChannel();
 
         MainActivity.this.setTitle("Inbox");
 

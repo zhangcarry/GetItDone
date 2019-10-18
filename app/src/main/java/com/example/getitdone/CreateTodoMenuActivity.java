@@ -52,6 +52,7 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
 
         CreateTodoMenuActivity.this.setTitle("Create New Task");
 
+
         // constants
         final EditText editName = findViewById(R.id.editTitle);
         final Calendar myCalendar = Calendar.getInstance();
@@ -146,11 +147,12 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
 
                 //creating a new intent specifying the broadcast receiver
                 Intent i = new Intent(CreateTodoMenuActivity.this, myAlarm.class);
+                i.putExtra("name", editName.getText().toString());
 
                 //creating a pending intent using the intent
-                PendingIntent pi = PendingIntent.getBroadcast(CreateTodoMenuActivity.this, 0, i, 0);
+                PendingIntent pi = PendingIntent.getBroadcast(CreateTodoMenuActivity.this, 1, i, 0);
 
-                //setting the repeating alarm that will be fired every day
+                //setting the  alarm that will be on selected time
                 am.setExact(AlarmManager.RTC_WAKEUP, time, pi);
                 Toast.makeText(CreateTodoMenuActivity.this, "Alarm is set", Toast.LENGTH_SHORT).show();
             }
