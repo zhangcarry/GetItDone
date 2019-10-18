@@ -2,8 +2,11 @@ package com.example.getitdone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -133,11 +137,29 @@ public class Edit extends AppCompatActivity {
                     else td.setDueDate(null);
                     if (tt.trim() != "") td.setDueTime(tt);
                     else td.setDueTime(null);
+                    setAlarm(myCalendar.getTimeInMillis());
                     helpers.editTodo(td, pos, getApplicationContext());
                     finish();
                 }
+
+
+            }
+            private void setAlarm(long time) {
+                //getting the alarm manager
+                AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                //creating a new intent specifying the broadcast receiver
+                Intent i = new Intent(Edit.this, myAlarm.class);
+                i.putExtra("name", editName.getText().toString());
+
+                //creating a pending intent using the intent
+                PendingIntent pi = PendingIntent.getBroadcast(Edit.this, 1, i, 0);
+
+                //setting the  alarm that will be on selected time
+                am.setExact(AlarmManager.RTC_WAKEUP, time, pi);
             }
         });
 
     }
+
 }

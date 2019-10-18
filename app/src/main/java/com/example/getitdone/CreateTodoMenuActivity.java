@@ -152,7 +152,6 @@ public class CreateTodoMenuActivity extends AppCompatActivity {
 
                 //setting the  alarm that will be on selected time
                 am.setExact(AlarmManager.RTC_WAKEUP, time, pi);
-                Toast.makeText(CreateTodoMenuActivity.this, "Alarm is set", Toast.LENGTH_SHORT).show();
             }
         });
 
