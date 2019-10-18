@@ -1,16 +1,10 @@
 package com.example.getitdone;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
-import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,8 +16,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -37,7 +29,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.Menu;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -133,7 +124,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (item.getItemId() == R.id.edit) {
             // When Edit is selected, jump to Edit activity
-            Intent intent = new Intent(MainActivity.this, edit.class);
+            Intent intent = new Intent(MainActivity.this, Edit.class);
             Todo todo = (Todo) tdListView.getItemAtPosition(pos);
             intent.putExtra("name", todo.getName());
             intent.putExtra("Date", todo.getDueDate());

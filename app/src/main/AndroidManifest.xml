@@ -13,7 +13,7 @@
             android:name=".WelcomeHelp"
             android:label="@string/title_activity_welcome_help"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".edit" />
+        <activity android:name=".Edit" />
         <activity android:name=".CreateTodoMenuActivity" />
         <activity
             android:name=".MainActivity"
