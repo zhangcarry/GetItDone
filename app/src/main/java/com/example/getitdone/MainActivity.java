@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity
     ListView tdListView;
     private ArrayAdapter tdListAdapter;
     int pos = 1;
-    int current_length = 0;
+    int previous_length = 0;
+    List previous_list = new ArrayList();
 
     // context menu
     @Override
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("Date", todo.getDueDate().toString());
             intent.putExtra("Time", todo.getDueTime().toString());
             intent.putExtra("pos", pos);
-            current_length = Serialize.loadTodos(this).size();
+            previous_list = Serialize.loadTodos(this);
             startActivityForResult(intent, edit_REQUEST);
         }
 
@@ -353,13 +354,17 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CREATE_TODO_REQUEST) {
             refreshTodoList();
-            if (Serialize.loadTodos(this).size() == current_length+1) {
+            if (Serialize.loadTodos(this).size() == previous_length+1) {
                 Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "Item created.", Snackbar.LENGTH_SHORT);
                 snackbar.show();
             }
         }
         if (resultCode == edit_REQUEST){
             refreshTodoList();
+            if (!Serialize.loadTodos(this).equals(previous_list)) {
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "Item edited.", Snackbar.LENGTH_SHORT);
+                snackbar.show();
+            }
         }
     }
 
@@ -387,7 +392,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CreateTodoMenuActivity.class);
-                current_length = Serialize.loadTodos(MainActivity.this).size();
+                previous_length = Serialize.loadTodos(MainActivity.this).size();
                 startActivityForResult(intent, CREATE_TODO_REQUEST);
             }
         });
