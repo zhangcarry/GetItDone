@@ -278,6 +278,29 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_help) {
             Intent intent = new Intent(this,WelcomeHelp.class);
             startActivity(intent);
+        } else if (id == R.id.nav_clear) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+            builder.setTitle("Clear all items");
+            builder.setMessage("All your todo items will be deleted. This action is not reversible.\nWould you like to proceed?");
+
+            builder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // clear all
+                }
+            });
+
+            // Cancel the operation
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog diag = builder.create();
+            diag.show();
         } else if (id == R.id.nav_forecast) {
             final Calendar myCalendar = Calendar.getInstance();
 
