@@ -291,6 +291,9 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // clear all
+                    List empty = new ArrayList();
+                    Serialize.saveTodos(empty,MainActivity.this);
+                    refreshTodoList();
                 }
             });
 
